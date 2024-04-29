@@ -1,0 +1,20 @@
+{
+  "name": "spydir",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/utils/zipRead.js",
+  "scripts": {
+    "start": "run",
+    "test": "test",
+    "lint": "eslint --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SpyDir-BBD/SpyDir.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "eslint": "^9.1.1"
+  }
+}

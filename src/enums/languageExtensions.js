@@ -1,0 +1,36 @@
+const LANGUAGE_EXTENSIONS = {
+    '.js': 'JavaScript',
+    '.py': 'Python',
+    '.java': 'Java',
+    '.cpp': 'C++',
+    '.c': 'C',
+    '.html': 'HTML',
+    '.css': 'CSS',
+    '.php': 'PHP',
+    '.rb': 'Ruby',
+    '.swift': 'Swift',
+    '.ts': 'TypeScript',
+    '.cs': 'C#',
+    '.go': 'Go',
+    '.r': 'R',
+    '.pl': 'Perl',
+    '.sql': 'SQL',
+    '.sh': 'Shell Script',
+    '.lua': 'Lua',
+    '.jsx': 'React JSX',
+    '.tsx': 'React TypeScript',
+    '.vue': 'Vue.js',
+    '.sass': 'Sass',
+    '.scss': 'SCSS',
+    '.less': 'Less',
+    '.json': 'JSON',
+    '.yaml': 'YAML',
+    '.xml': 'XML',
+    '.svg': 'SVG',
+    '.md': 'Markdown',
+    '.yml': 'YAML',
+};
+
+module.exports = [
+    LANGUAGE_EXTENSIONS
+];
