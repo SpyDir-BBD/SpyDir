@@ -13,7 +13,6 @@ jobs:
   build-docker-image:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
-    #environment: production
     env:
       IMAGE_TAG: ${{ github.sha }}
 
