@@ -1,6 +1,6 @@
-const { OBJECT_TYPE } = require("../enums/fileTypes");
+import { OBJECT_TYPE } from "../enums/fileTypes.js";
 
-class FileObject {
+export class FileObject {
     constructor(name, type) {
         this.name = name;
         this.type = type;
@@ -35,7 +35,7 @@ class FileObject {
     }
 }
 
-const constructFileSystem = (files) => {
+export const constructFileSystem = (files) => {
     const root = new FileObject("Root", OBJECT_TYPE.FOLDER);
 
     for (const filePath of files) {
@@ -59,8 +59,4 @@ const constructFileSystem = (files) => {
     }
 
     return root;
-}
-
-module.exports = {
-    constructFileSystem
-}
+};

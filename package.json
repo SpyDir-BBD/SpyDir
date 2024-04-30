@@ -2,9 +2,9 @@
   "name": "spydir",
   "version": "1.0.0",
   "description": "",
-  "main": "src/utils/zipRead.js",
+  "main": "app/app.js",
   "scripts": {
-    "start": "run",
+    "start": "set Node_ENV=development& NODE app/app.js",
     "test": "test",
     "lint": "eslint --fix"
   },
@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "eslint": "^9.1.1"
+    "eslint": "^9.1.1",
+    "express": "^4.19.2"
   }
 }
