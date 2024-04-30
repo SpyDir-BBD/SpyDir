@@ -1,0 +1,76 @@
+name: Deploy to Amazon EC2
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-docker-image:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+    #environment: production
+    env:
+      IMAGE_TAG: ${{ github.sha }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Configure AWS credentials from AWS account
+      uses: aws-actions/configure-aws-credentials@v4
+      id: creds
+      with:
+        role-to-assume: ${{ secrets.AWS_ROLE }}
+        aws-region: ${{ secrets.AWS_REGION }}
+        output-credentials: true
+        role-session-name: Github-OIDC-TERRAFORM
+        audience: sts.amazonaws.com
+
+    - name: Set IP env variable
+      run: |
+        EC2_IP=$(aws ec2 describe-instances --query "Reservations[*].Instances[?KeyName=='${{ secrets.EC2_SSH_KEY_NAME }}'].PublicIpAddress" --output text)
+        echo "::add-mask::$EC2_IP"
+        echo "EC2_IP=$EC2_IP" >> $GITHUB_ENV
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1 
+      
+    - name: Build and push image
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_NAME }}
+      run: |
+        # Build a docker container and
+        # push it to ECR so that it can
+        # be deployed to EC2
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+        
+    - name: Executing remote ssh commands using ssh key
+      env:
+        REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        REPOSITORY: ${{ secrets.ECR_REPOSITORY_NAME }}     
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+        AWS_ACCESS_KEY_ID: ${{ steps.creds.outputs.aws-access-key-id }}
+        AWS_SECRET_ACCESS_KEY: ${{ steps.creds.outputs.aws-secret-access-key }}
+        AWS_SESSION_TOKEN: $${{ steps.creds.outputs.aws-session-token }}
+        IMAGE_TAG: ${{ github.sha }}
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ env.EC2_IP }}
+        username: ubuntu
+        key:  ${{ secrets.EC2_SSH_KEY_VALUE }}
+        envs: PRIVATE_SSH_KEY, REGISTRY, REPOSITORY, IMAGE_TAG, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, AWS_REGION
+        script: |-
+           aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ secrets.ECR_REPO_PASSWORD }}
+           sudo docker stop my-node-app || true
+           sudo docker rm my-node-app || true
+           sudo docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+           sudo docker run -d --name my-node-app -p 8080:5000 -e DB_HOST="${{ secrets.DB_HOST }}" -e DB_NAME="${{ secrets.DB_NAME }}" -e DB_USER="${{ secrets.DB_USER }}" -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" $REGISTRY/$REPOSITORY:$IMAGE_TAG

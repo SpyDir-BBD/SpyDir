@@ -1,26 +1,26 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f0f0f0;
-  }
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
   
-  .container {
-    width: 80%;
-    margin: auto;
-    text-align: center;
-    padding-top: 100px;
-  }
-  
-  h1 {
-    font-size: 3em;
-    color: #333;
-  }
-  
-  p {
-    font-size: 1.2em;
-    color: #666;
-  }
-  button {
-    border-radius: 12rem;
+.container {
+  width: 80%;
+  margin: auto;
+  text-align: center;
+  padding-top: 100px;
+}
+
+h1 {
+  font-size: 3em;
+  color: #333;
+}
+
+p {
+  font-size: 1.2em;
+  color: #666;
+}
+button {
+  border-radius: 12rem;
 }
