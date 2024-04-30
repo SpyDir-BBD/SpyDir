@@ -73,7 +73,7 @@ const eocdIndex = findZipHeader(byteData);
 const centralDirectoryOffset = findCentralDirectoryOffset(byteData, eocdIndex);
 const list = printCentralDirectory(byteData, centralDirectoryOffset);
 
-const root = constructFileSystem(list);4
+const root = constructFileSystem(list);
 
 console.log(root);
 
