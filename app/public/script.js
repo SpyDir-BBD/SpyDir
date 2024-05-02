@@ -5,6 +5,9 @@ document.addEventListener("DOMContentLoaded", function() {
   document.querySelector("button").addEventListener("click", uploadFile);
 });
 
+document.getElementById("burgerButton").addEventListener("click",openNav);
+document.getElementById("closeBurger").addEventListener("click",closeNav);
+
 function uploadFile() {
     const fileInput = document.getElementById('fileInput');
     const file = fileInput.files[0]; // Get the first file from the input
@@ -37,3 +40,11 @@ function uploadFile() {
 
     reader.readAsArrayBuffer(file);
   };
+
+function openNav() {
+  document.getElementById("navBar").style.width = "25rem";
+};
+
+function closeNav() {
+  document.getElementById("navBar").style.width = "0";
+};

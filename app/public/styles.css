@@ -17,6 +17,8 @@ body{
     /* background-color: red; */
     margin: 0.1rem;
     flex-direction: column;
+
+    transition: margin-right .5s;
 }
 
 .outerFlex-2{
@@ -114,4 +116,27 @@ cursor: pointer;
 .uploadDescHolder{
     /* background-color: blue; */
     text-align: center;
+}
+
+/* The side navigation menu */
+.navBar {
+  height: 100%; /* 100% Full-height */
+  width: 0; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  right: 0;
+  background-color: #ffffff; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 6rem; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+
+#closeBurger{
+  padding: 0.4rem;
+}
+
+#closeBurger:hover{
+  transform: scale(1.2);
+  cursor: pointer;
 }
