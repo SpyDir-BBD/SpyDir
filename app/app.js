@@ -1,6 +1,7 @@
 var express = require('express');
 const { Pool } = require('pg');
 
+var AuthManager = require('./public/src/utils/GithubAuth.js');
 var app = express();
 
 app.use(express.static(__dirname + '/public'));
