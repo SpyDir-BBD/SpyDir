@@ -63,20 +63,6 @@ body{
     text-align: center;
     align-content: center;
 }
-
-.navList{
-  list-style-type: none;
-}
-
-.listFlex{
-  display: flex;
-  flex-direction: row;
-  align-items: baseline;
-}
-
-.listIcon{
-  padding: 0.5rem;
-}
 #mainTitle{
     font-size: 1.3rem;
     padding: 0.2rem;
