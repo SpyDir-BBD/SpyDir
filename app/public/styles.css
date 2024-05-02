@@ -23,8 +23,8 @@ body{
 
 .outerFlex-2{
     display: flex;
-    /* background-color: green; */
-    margin: 0.1rem;
+     /* background-color: green;  */
+    margin: 0.5rem;
 }
 
 
@@ -53,6 +53,26 @@ body{
     box-shadow: 0 0.1rem 0.5rem rgb(0 0 0 / 0.2);
 }
 
+.shadowCard{
+  width: 60%;
+  height: 30rem;
+  background-color: rgb(255, 255, 255);
+  border-radius: 0.1rem;
+  margin: auto;
+  box-shadow: 0 0.1rem 0.5rem rgb(0 0 0 / 0.2);
+  width: 0;
+}
+
+.cardTitle{
+  font-size:1.1rem;
+  padding: 0.2rem;
+  text-align: center;
+}
+
+.hidden{
+  display: none;
+}
+
 .innerUpload-boxFlex{
     background-color: var(--veryLightBlue);
     border-radius: 0.1rem;
@@ -76,6 +96,12 @@ body{
   align-items: baseline;
 }
 
+.listFlex:hover{
+  transform: scale(1.1);
+  transition: 0.3s;
+cursor: pointer;
+}
+
 .listIcon{
   padding: 0.5rem;
 }
@@ -85,7 +111,7 @@ body{
 }
 
 #userName{
-    font-size: 1.1rem;
+    font-size: 1.4rem;
     padding: 0.2rem;
 }
 
@@ -97,6 +123,7 @@ body{
 
 #burgerButton{
     padding: 0.2rem;
+    font-size: 1.3rem;
 }
 
 #burgerButton:hover {
@@ -120,23 +147,28 @@ cursor: pointer;
 
 /* The side navigation menu */
 .navBar {
-  height: 100%; /* 100% Full-height */
-  width: 0; /* 0 width - change this with JavaScript */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Stay on top */
-  top: 0; /* Stay at the top */
+  height: 100%;
+  width: 0; 
+  position: fixed; 
+  z-index: 1; 
+  top: 0; 
   right: 0;
-  background-color: #ffffff; /* Black*/
-  overflow-x: hidden; /* Disable horizontal scroll */
-  padding-top: 6rem; /* Place content 60px from the top */
-  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+  background-color: #ffffff;
+  overflow-x: hidden; 
+  padding-top: 6rem; 
+  transition: 0.5s; 
 }
 
 #closeBurger{
   padding: 0.4rem;
+  font-size:1.3rem;
 }
 
 #closeBurger:hover{
   transform: scale(1.2);
   cursor: pointer;
+}
+
+#navUserName{
+  padding:1rem;
 }

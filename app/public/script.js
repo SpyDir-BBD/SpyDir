@@ -42,7 +42,7 @@ function uploadFile() {
   };
 
 function openNav() {
-  document.getElementById("navBar").style.width = "25rem";
+  document.getElementById("navBar").style.width = "15rem";
 };
 
 function closeNav() {
