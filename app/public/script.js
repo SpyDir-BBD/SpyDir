@@ -1,5 +1,6 @@
 import { constructFileSystem } from "./src/classes/folderClass.js";
 import { findZipHeader, findCentralDirectoryOffset, printCentralDirectory } from "./src/utils/zipRead.js";
+import { AuthManager } from "./src/utils/GithubAuth.js";
 
 document.addEventListener("DOMContentLoaded", function() {
   document.querySelector("button").addEventListener("click", uploadFile);
@@ -54,4 +55,35 @@ function launchAuth() {
   const url = `https://github.com/login/oauth/authorize?client_id=${clientID}&scope=user,repo,pull_requests:write,pull_requests:read`;
 
   window.open(url);
+}
+var a = document.getElementById('userName'); 
+a.addEventListener('click', launchAuth, false);
+
+// Define the handleJSONPResponse function globally
+window.handleJSONPResponse = function(data) {
+  console.log('Response data:', data);
+  
+  // Process the response data as needed
+  // For example, you can extract the access token from the data object
+  const accessToken = data.access_token;
+
+  // Call methods or perform actions based on the response data
+  // For example, you might want to set the access token and fetch user information
+  if (accessToken) {
+      // Set the access token in the AuthManager instance
+      AuthManager.instance.access_token = accessToken;
+      
+      // Fetch user information or perform other actions
+      AuthManager.instance.setUserInfo();
+  } else {
+      console.error('Access token not found in the response data');
+  }
+};
+
+
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+if (urlParams.has('code'))
+{
+  const _ = new AuthManager(urlParams.get('code'));
 }
