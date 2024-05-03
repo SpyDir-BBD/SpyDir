@@ -55,3 +55,10 @@ function openNav() {
 function closeNav() {
   document.getElementById("navBar").style.width = "0";
 };
+function launchAuth() {
+  const clientID = 'Ov23liaDwohBlKUDcyxf';
+
+  const url = `https://github.com/login/oauth/authorize?client_id=${clientID}&scope=user,repo,pull_requests:write,pull_requests:read`;
+
+  window.open(url);
+}
