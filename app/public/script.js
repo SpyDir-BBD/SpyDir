@@ -7,6 +7,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
 document.getElementById("burgerButton").addEventListener("click",openNav);
 document.getElementById("closeBurger").addEventListener("click",closeNav);
+document.getElementById("uploadIcon").addEventListener("click", addFile)
+document.getElementById("browseLink").addEventListener("click",addFile);
+
+function addFile(){
+  var fileInputField = document.getElementById("fileInput");
+  fileInputField.click();
+}
 
 function uploadFile() {
     const fileInput = document.getElementById('fileInput');
