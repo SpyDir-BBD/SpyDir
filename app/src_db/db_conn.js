@@ -32,6 +32,10 @@ class ConnectDB {
         this.pool.query('SELECT * FROM themes WHERE id = $1', [theme_id], callback);
     }
 
+    async checkUserExists(username, callback) {
+        await this.pool.query('SELECT COUNT(*) AS user_count FROM Users WHERE username = $1', [username], callback);
+    }
+
     addUser(username, theme_id, callback) {
         this.pool.query('INSERT INTO Users (username, themepreference) VALUES ($1, $2) RETURNING *', [username, theme_id], callback);
     }
