@@ -1,5 +1,6 @@
+
+const ConnectDB = require('./src_db/db_conn');
 var express = require('express');
-const { Pool } = require('pg');
 
 var app = express();
 
@@ -10,38 +11,55 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname +  '/public/landing.html');
 });
 
-var server = app.listen(process.env.PORT || 5000);
-/*var server = app.listen(process.env.PORT || 5000, function() {
-  var port = server.address().port;
-  var url = `http://localhost:${port}`;
-  console.log(`App now running on url http://localhost:${port}`);
-});*/
+var server = app.listen(5000);
 
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: 5432, 
-  ssl: {
-    rejectUnauthorized: false
-  }
-});
-
+const pool = new ConnectDB(process.env.DB_USER, process.env.DB_HOST, process.env.DB_NAME, process.env.DB_PASSWORD);
 pool.connect();
 
-// Create a JSON user object
-//const user = {
-//  username: 'John Doe',
-//  email: 'johndoe@gmail.com'
-//};
-//
-//pool.query('INSERT INTO Users (UserName, Email, DateCreated) VALUES ($1, $2, CURRENT_TIMESTAMP) RETURNING *', [user.username, user.email], (err, result) => {
-//  if (err) {
-//    console.error('Error inserting user:', err);
-//    return;
-//  }
-//  
-//  console.log('User inserted successfully:', result.rows[0]);
-//});
+app.get('/themes', (req, res) => {
+  pool.getThemes( (error, response) => {
+    if (error) {
+      console.log(error);
+      res.status(404).header('Content-Type', 'application/json').send(JSON.stringify(error));
+    }
+    console.log(response.rows);
+    res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(response.rows));
+  });
+});
 
+app.get('/filetypes', (req, res) => {
+  pool.getThemes( (error, response) => {
+    if (error) {
+      console.log(error);
+      res.status(404).header('Content-Type', 'application/json').send(JSON.stringify(error));
+    }
+    console.log(response.rows);
+    res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(response.rows));
+  });
+});
+
+app.get('/history', (req, res) => {
+  pool.getHistory( (error, response) => {
+    if (error) {
+      console.log(error);
+      res.status(404).header('Content-Type', 'application/json').send(JSON.stringify(error));
+    }
+    console.log(response.rows);
+    res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(response.rows));
+  });
+});
+
+/*
+app.post('/user', (req, res) => {
+
+  username = "Christo"; // username comes from an html form or something
+  theme_id = 2; // discuss where username and theme_id come from
+  pool.addUser(username, theme_id, (error, response) => {
+    if (error) {
+      console.log(error);
+    }
+    console.log(response.rows);
+    //res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(response));
+  });
+});
+*/
