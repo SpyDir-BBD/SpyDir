@@ -55,6 +55,10 @@ class ConnectDB {
     getUserHistory(user_id, callback) {
         this.pool.query('SELECT * FROM themes WHERE id = $1', [user_id], callback);
     }
+
+    postFileUpload(filename, maintype, user_id, callback) {
+        this.pool.query('INSERT INTO history (filename, mainfiletype, userid, datecreated) VALUES (\'$1\', $2, $3, CURRENT_TIMESTAMP)',[filename, maintype, user_id], callback);
+    }
 }
 
 module.exports = ConnectDB;

@@ -49,17 +49,18 @@ app.get('/history', (req, res) => {
   });
 });
 
-/*
+
 app.post('/user', (req, res) => {
 
-  username = "Christo"; // username comes from an html form or something
-  theme_id = 2; // discuss where username and theme_id come from
-  pool.addUser(username, theme_id, (error, response) => {
-    if (error) {
-      console.log(error);
-    }
-    console.log(response.rows);
-    //res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(response));
-  });
+  username = req.body.username;
+  theme_id = req.body.theme_id;
+  if (username && theme_id) {
+    pool.addUser(username, theme_id, (error, response) => {
+      if (error) {
+        console.log(error);
+      }
+      console.log(response.rows);
+      //res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(response));
+    });
+  }
 });
-*/
