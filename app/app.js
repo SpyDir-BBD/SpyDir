@@ -73,9 +73,17 @@ app.post('/api/user', async (req, res) => {
     var theme_id = await req.body["theme_id"];
 
     if (await pool.checkUserExists(username, async (error, response) => {
-      console.log(await response.rowCount);
-      if (response.rowCount==1) {
-        res.status(208).header('Content-Type', 'application/json').send(JSON.stringify({"message" : "User already exists in database"})); // status code 409 is used if resource already exists
+      //console.log(response);
+      //console.log(await response.rows[0]["user_count"]);
+      if (response.rows[0]["user_count"]==1) {
+        await pool.getUserByUsername(username, async (error, response) => {
+          var data = {
+            "message" : "User already exists in database",
+            "user_details" : response.rows[0]
+          };
+          console.log(data);
+          res.status(208).header('Content-Type', 'application/json').send(JSON.stringify(data)); // status code 409 is used if resource already exists
+        });
       }
       else {
         pool.addUser(username, theme_id, (error, response) => {
@@ -85,7 +93,11 @@ app.post('/api/user', async (req, res) => {
           }
           else {
             console.log(response.rows);
-            res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(response.rows));
+            var data = {
+              "message" : "User already exists in database",
+              "user_details" : response.rows[0]
+            };
+            res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(data));
           }
         });
       }

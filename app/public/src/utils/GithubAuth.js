@@ -82,7 +82,6 @@ export class AuthManager {
             navName.innerText = this.username;
 
             /*****************************************************************/
-
             //const db_endpoint =  'http://localhost:5000';
             
             const request = await fetch('/api/user', {
@@ -96,7 +95,12 @@ export class AuthManager {
                 })
             })
             .then( res => res.json())
-            .then( data => console.log(data))
+            .then( (data) => {
+                //console.log(data);
+                //console.log("============================");
+                this.user_id = data["user_details"]["id"];
+                this.theme_id = data["user_details"]["themepreference"];
+            })
             .catch( err => console.log(err));
 
             console.log("===========================");

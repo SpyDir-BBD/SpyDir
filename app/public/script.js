@@ -1,6 +1,7 @@
 import { constructFileSystem } from "./src/classes/folderClass.js";
 import { findZipHeader, findCentralDirectoryOffset, printCentralDirectory } from "./src/utils/zipRead.js";
 import { AuthManager } from "./src/utils/GithubAuth.js";
+import { LANGUAGE_EXTENSIONS } from "./src/enums/languageExtensions.js";
 
 document.addEventListener("DOMContentLoaded", function() {
   document.querySelector("button").addEventListener("click", uploadFile);
@@ -45,6 +46,9 @@ function uploadFile() {
 
       const root = constructFileSystem(list);
       console.log(root);
+
+      // code to count the number of extensions a file has, and get the main file type
+      // we already have the user id, themepreference, and username.
     };
 
     reader.readAsArrayBuffer(file);
