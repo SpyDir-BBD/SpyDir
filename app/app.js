@@ -39,7 +39,7 @@ app.get('/github-data', async (req, res) => {
     console.log("access_token = " + globalAccessToken);
     console.log("===========================");
     // Send the GitHub API response back to the client
-    res.send(githubData);
+    res.status(200).send(githubData);
   } 
   catch (error) {
     console.error('Error:', error);
@@ -60,31 +60,33 @@ const pool = new ConnectDB(process.env.DB_USER, process.env.DB_HOST, process.env
 pool.connect();
 
 app.post('/api/user', async (req, res) => {
-  //console.log( await JSON.parse(req.body));
-  req.body = JSON.parse(req.body);
-  var username = await req.body["username"];
-  var theme_id = await req.body["theme_id"];
-
   // brearer has 7 characters
   const requestAccessToken = req.headers.authorization.substring(7, req.headers.authorization.length);
   console.log("access_token = " + requestAccessToken);
   if (requestAccessToken !== globalAccessToken) {
-    return res.status(403).json({ "error": 'Access token is not valid.' });
+    res.status(403).send(JSON.stringify({ 'error': 'Access token is not valid.' })); // status code 403 = forbidden -> server refuses to authorize user
   }
   else {
+    //console.log( await JSON.parse(req.body));
+    req.body = JSON.parse(req.body);
+    var username = await req.body["username"];
+    var theme_id = await req.body["theme_id"];
+
     if (await pool.checkUserExists(username, async (error, response) => {
       console.log(await response.rowCount);
       if (response.rowCount==1) {
-        res.status(200).header('Content-Type', 'application/json').send(JSON.stringify({"message" : "User already exists in database"}));
+        res.status(208).header('Content-Type', 'application/json').send(JSON.stringify({"message" : "User already exists in database"})); // status code 409 is used if resource already exists
       }
       else {
         pool.addUser(username, theme_id, (error, response) => {
           if (error) {
             console.log(error);
-            res.status(409).header('Content-Type', 'application/json').send(JSON.stringify({"message" : error})); // status code 409 is used if resource already exists
+            res.status(500).header('Content-Type', 'application/json').send(JSON.stringify({"message" : error})); // status code 500 = internal server error
           }
-          console.log(response.rows);
-          res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(response.rows));
+          else {
+            console.log(response.rows);
+            res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(response.rows));
+          }
         });
       }
     }));
@@ -103,7 +105,7 @@ app.get('/api/themes', (req, res) => {
 });
 
 app.get('/api/filetypes', (req, res) => {
-  pool.getThemes( (error, response) => {
+  pool.getFileTypes( (error, response) => {
     if (error) {
       console.log(error);
       res.status(404).header('Content-Type', 'application/json').send(JSON.stringify(error));

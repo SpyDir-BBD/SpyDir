@@ -85,7 +85,7 @@ a.addEventListener('click', launchAuth, false);
 
 // Define the handleJSONPResponse function globally
 window.handleJSONPResponse = function(data) {
-  console.log('Response data:', data);
+  //console.log('Response data:', data);
   
   // Process the response data as needed
   // For example, you can extract the access token from the data object
