@@ -82,7 +82,6 @@ export class AuthManager {
             navName.innerText = this.username;
 
             /*****************************************************************/
-            //const db_endpoint =  'http://localhost:5000';
             
             const request = await fetch('/api/user', {
                 method: 'POST', // or 'POST' depending on your server endpoint

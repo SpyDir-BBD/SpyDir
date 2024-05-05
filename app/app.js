@@ -47,13 +47,14 @@ app.get('/github-data', async (req, res) => {
   }
 });
 
-var server = app.listen(process.env.PORT || 5000, function() {
+/*var server = app.listen(process.env.PORT || 5000, function() {
   var port = server.address().port;
   var url = `http://localhost:${port}`;
   console.log(`App now running on url http://localhost:${port}`);
-});
+});*/
 
-//var server = app.listen(5000);
+var server = app.listen(5000);
+console.log('App now running on url http://localhost:5000');
 // db connection and db endpoints
 
 const pool = new ConnectDB(process.env.DB_USER, process.env.DB_HOST, process.env.DB_NAME, process.env.DB_PASSWORD);
@@ -62,7 +63,8 @@ pool.connect();
 app.post('/api/user', async (req, res) => {
   // brearer has 7 characters
   const requestAccessToken = req.headers.authorization.substring(7, req.headers.authorization.length);
-  console.log("access_token = " + requestAccessToken);
+  //console.log("access_token = " + requestAccessToken);
+
   if (requestAccessToken !== globalAccessToken) {
     res.status(403).send(JSON.stringify({ 'error': 'Access token is not valid.' })); // status code 403 = forbidden -> server refuses to authorize user
   }
@@ -138,3 +140,35 @@ app.get('/api/history', (req, res) => {
     res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(response.rows));
   });
 });
+
+// access token is not required to view history
+app.post('/api/uploadfile', async (req, res) => {
+  req.body = JSON.parse(req.body);
+
+  var maintype = await req.body["maintype"];
+  var filename = await req.body["filename"];
+  var user_id = await req.body["userid"];
+
+  console.log(filename);
+  console.log(maintype);
+  console.log(user_id);
+
+  pool.getFileTypeByName(maintype, async (error, response) => {
+    //console.log(response);
+    //console.log(error);
+    var maintype_id = response.rows[0]["id"];
+    //res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(response.rows));
+
+    pool.postFileUpload(filename, maintype_id, user_id, (error, response) => {
+      if (error) {
+        //console.log(error);
+        res.status(404).header('Content-Type', 'application/json').send(JSON.stringify(error));
+      }
+      else {
+        console.log(response);
+        res.status(200).header('Content-Type', 'application/json').send(JSON.stringify({ 'message': 'file added successfully.' }));
+      }
+    });
+  });
+});
+

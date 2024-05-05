@@ -56,8 +56,12 @@ class ConnectDB {
         this.pool.query('SELECT * FROM themes WHERE id = $1', [user_id], callback);
     }
 
+    async getFileTypeByName(name, callback) {
+        await this.pool.query('SELECT * FROM filetypes WHERE filename = $1', [name], callback);
+    }
+
     postFileUpload(filename, maintype, user_id, callback) {
-        this.pool.query('INSERT INTO history (filename, mainfiletype, userid, datecreated) VALUES (\'$1\', $2, $3, CURRENT_TIMESTAMP)', [filename, maintype, user_id], callback);
+        this.pool.query('INSERT INTO history (filename, mainfiletype, userid, datecreated) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)', [filename, maintype, user_id], callback);
     }
 }
 

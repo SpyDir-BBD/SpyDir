@@ -22,35 +22,91 @@ function uploadFile() {
     const fileInput = document.getElementById('fileInput');
     const file = fileInput.files[0]; // Get the first file from the input
     
-    if (!file)
-    {
+    if (!file) {
       console.log("No file selected");
       return;
     }
 
-    if (!file.name.split('.')[1] == '.zip')
-    {
+    if (!file.name.split('.')[1] == '.zip') {
       console.log("Not a Zip file");
       return;
     }
 
+    const filename = file.name.split('.')[0];
     const reader = new FileReader();
-    reader.onload = function(event) {
+    reader.onload = async (event) => {
+
       const byteData = new Uint8Array(event.target.result);
-
       const eocdIndex = findZipHeader(byteData);
-
       const centralDirectoryOffset = findCentralDirectoryOffset(byteData, eocdIndex);
-
       const list = printCentralDirectory(byteData, centralDirectoryOffset);
-
       const root = constructFileSystem(list);
       console.log(root);
 
-      // code to count the number of extensions a file has, and get the main file type
-      // we already have the user id, themepreference, and username.
-    };
+      /******************************************************************/
+      // calculate file extensions
+      const extensionCounts = root.countDistinctExtensions();
 
+      // Calculate total file count
+      const totalFiles = Object.values(extensionCounts).reduce((acc, count) => acc + count, 0);
+
+      // Calculate percentages
+      const extensionPercentages = {};
+      for (const extension in extensionCounts) {
+        const count = extensionCounts[extension];
+        const percentage = (count / totalFiles) * 100;
+        extensionPercentages[extension] = percentage.toFixed(2) + '%';
+      }
+
+      // sort the extensions according the values
+      const sortedExtensions = Object.keys(extensionCounts).sort((a, b) => extensionCounts[b] - extensionCounts[a]);
+
+      let mainExtension;
+
+      const ext = ['.js','.py','.java','.cpp','.c','.html','.css','.php','.rb','.swift','.ts','.cs','.go','.r','.pl','.sql','.sh','.lua','.jsx','.tsx','.vue','.sass','.scss','.less','.json','.yaml','.xml','.svg','.md','.yml'];
+
+      for (const i in sortedExtensions) {
+        //console.log("extension: " + sortedExtensions[e]);
+        if (ext.includes(sortedExtensions[i])) {
+          mainExtension = sortedExtensions[i];
+          console.log("Main File Extension Type:", mainExtension);
+          break;
+        }
+      }
+
+      // if there are no applicable extensions
+      console.log("Main File Extension Type:", mainExtension);
+      if (!mainExtension) {
+        mainExtension = "undefined";
+      }
+
+      console.log("Filename:", filename);
+      console.log("Total Files:", totalFiles);
+      console.log("Main File Extension Type:", mainExtension);
+      console.log("Extension Percentages:", extensionPercentages);
+
+      if (mainExtension !== "undefined") {
+        const request = await fetch('/api/uploadfile', {
+          method: 'POST',
+          headers: {
+            "Authorization": `Bearer ${AuthManager.instance.access_token}`, // access token is required to upload a file
+          },
+          body: JSON.stringify({
+            "filename": `${filename}`,
+            "maintype": `${mainExtension}`,
+            "userid": `${AuthManager.instance.user_id}`
+          })
+        })
+        .then( res => res.json())
+        .then( (data) => {
+          // data contains a json list of files that were uploaded, operations on the list can be done here
+          console.log(data);
+        })
+        .catch( err => console.log(err));
+      }
+
+      // do not upload file if it does not contain a file extension related to our language extensions
+    };
     reader.readAsArrayBuffer(file);
   };
 
@@ -70,7 +126,7 @@ function launchAuth() {
 
 async function handleHistory() {
   const request = await fetch('/api/history', {
-    method: 'GET', // or 'POST' depending on your server endpoint
+    method: 'GET', 
     headers: {
       "Authorization": `Bearer ${AuthManager.instance.access_token}`,
     },
@@ -87,21 +143,12 @@ async function handleHistory() {
 var a = document.getElementById('userName'); 
 a.addEventListener('click', launchAuth, false);
 
-// Define the handleJSONPResponse function globally
 window.handleJSONPResponse = function(data) {
   //console.log('Response data:', data);
-  
-  // Process the response data as needed
-  // For example, you can extract the access token from the data object
   const accessToken = data.access_token;
 
-  // Call methods or perform actions based on the response data
-  // For example, you might want to set the access token and fetch user information
   if (accessToken) {
-    // Set the access token in the AuthManager instance
     AuthManager.instance.access_token = accessToken;
-    
-    // Fetch user information or perform other actions
     AuthManager.instance.setUserInfo();
   } 
   else {
