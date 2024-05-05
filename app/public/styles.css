@@ -60,7 +60,6 @@ body{
   border-radius: 0.1rem;
   margin: auto;
   box-shadow: 0 0.1rem 0.5rem rgb(0 0 0 / 0.2);
-  width: 0;
 }
 
 .cardTitle{
@@ -133,6 +132,18 @@ cursor: pointer;
 
 #uploadIcon{
     font-size: 5rem;
+}
+
+#uploadIcon:hover{
+  transform: scale(1.1);
+  transition: 0.5s;
+cursor: pointer;
+}
+
+#browseLink:hover{
+  color:var(--darkerBlue);
+  transition: 0.5s;
+  cursor: pointer;
 }
 
 #browseLink{

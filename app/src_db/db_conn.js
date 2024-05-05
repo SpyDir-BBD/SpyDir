@@ -32,20 +32,16 @@ class ConnectDB {
         this.pool.query('SELECT * FROM themes WHERE id = $1', [theme_id], callback);
     }
 
+    async checkUserExists(username, callback) {
+        await this.pool.query('SELECT COUNT(*) AS user_count FROM Users WHERE username = $1', [username], callback);
+    }
+
     addUser(username, theme_id, callback) {
         this.pool.query('INSERT INTO Users (username, themepreference) VALUES ($1, $2) RETURNING *', [username, theme_id], callback);
     }
 
-    getFileType(callback) {
-
-    }
-
     getFileTypes(callback) {
         this.pool.query('SELECT * FROM filetypes', callback);
-    }
-
-    setHistory(callback) {
-
     }
 
     getHistory(callback) {
@@ -57,7 +53,7 @@ class ConnectDB {
     }
 
     postFileUpload(filename, maintype, user_id, callback) {
-        this.pool.query('INSERT INTO history (filename, mainfiletype, userid, datecreated) VALUES (\'$1\', $2, $3, CURRENT_TIMESTAMP)',[filename, maintype, user_id], callback);
+        this.pool.query('INSERT INTO history (filename, mainfiletype, userid, datecreated) VALUES (\'$1\', $2, $3, CURRENT_TIMESTAMP)', [filename, maintype, user_id], callback);
     }
 }
 

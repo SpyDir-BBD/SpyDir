@@ -6,6 +6,7 @@
     <title>SpyDir</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://kit.fontawesome.com/a9db5c0ddd.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 </head>
 <body>
   <script type="module" src="script.js"></script>
@@ -17,7 +18,8 @@
                 <i class="fa-solid fa-spider"></i><h1 id="mainTitle">SpyDir Zip Viewer</h1>
             </section>
             <section class="headerItem">
-                <h2 id="userName">username</h2><i id="burgerButton" class="fa-solid fa-bars"></i>
+                <h2 id="userName">Click to Login</h2>
+                <i id="burgerButton" class="fa-solid fa-bars"></i>
             </section>
         </section>
     </section>
@@ -32,14 +34,17 @@
             </section>
         </section>
     </section>
-    <section class="outerFlex-2 hidden">
+    <section class="outerFlex-2 ">
       <section class="shadowCard">
         <h3 class="cardTitle">File Stuff</h3>
       </section>
     </section>
-    <section class="outerFlex-2 hidden">
+    <section class="outerFlex-2 ">
       <section class="shadowCard">
         <h3 class="cardTitle">Pie Chart Tings</h3>
+        <svg width="100" height="100">
+          <circle r="30" cx="50" cy="50" />
+          </svg>
       </section>
     </section>
    </section>
@@ -49,10 +54,10 @@
    </button>
    <nav class="navBar" id="navBar">
     <i id="closeBurger" class="fa-solid fa-bars"></i>
-    <h2 id="navUserName">username</h2>
+    <h2 id="navUserName" onclick="launchAuth()">Click to Login</h2>
     <ul class="navList">
       <li class="listFlex"><i class="fa-solid fa-house"></i><h3 class="listIcon">Home</h3></li>
-      <li class="listFlex"><i class="fa-solid fa-clock-rotate-left"></i><h3 class="listIcon">History</h3></li>
+      <li class="listFlex" id="historyLink"><i class="fa-solid fa-clock-rotate-left"></i><h3 class="listIcon">History</h3></li>
       <li class="listFlex"><i class="fa-solid fa-right-from-bracket"></i><h3 class="listIcon">Logout</h3></li>
     </ul>
    </nav>
