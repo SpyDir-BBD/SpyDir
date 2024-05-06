@@ -120,6 +120,14 @@ cursor: pointer;
     text-align: center;
 }
 
+#fileElem{
+  display: none;
+}
+
+#drop-area.highlight{
+  background-color: red;
+}
+
 #burgerButton{
     padding: 0.2rem;
     font-size: 1.3rem;

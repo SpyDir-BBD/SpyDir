@@ -24,9 +24,10 @@
         </section>
     </section>
     <section class="outerFlex-2">
-        <section class="upload-boxFlex">
+        <section class="upload-boxFlex" >
             <h3 id="zipUploadTitle">Zip Upload</h3>
-            <section class="innerUpload-boxFlex">
+            <section class="innerUpload-boxFlex" id="drop-area"">
+              <input type="file" id="fileElem" onchange="handleFiles(this.file)">
                 <i id="uploadIcon" class="fa-solid fa-cloud-arrow-up"></i>
                 <section class="uploadDescHolder">
                     <h4 class="center">Drag & drop file or <a id="browseLink">Browse</a></h4>

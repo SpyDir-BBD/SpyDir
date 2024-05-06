@@ -11,6 +11,47 @@ document.getElementById("closeBurger").addEventListener("click",closeNav);
 document.getElementById("uploadIcon").addEventListener("click", addFile)
 document.getElementById("browseLink").addEventListener("click",addFile);
 
+let dropArea = document.getElementById("drop-area");
+  dropArea.addEventListener("dragenter", handleDrop, false);
+  dropArea.addEventListener("dragleave", handleDrop, false);
+  dropArea.addEventListener("dragover", handleDrop, false);
+  dropArea.addEventListener("drop", handleDrop, false);
+
+  ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
+    dropArea.addEventListener(eventName, preventDefaults, false);
+  })
+  
+  function preventDefaults (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  ["dragenter", "dragover"].forEach(eventName => {
+    dropArea.addEventListener(eventName, highlight, false);
+    console.log("WHATTUPPPP");
+  });
+  
+  ['dragleave', 'drop'].forEach(eventName => {
+    dropArea.addEventListener(eventName, unhighlight, false);
+  });
+  
+  function highlight(e) {
+    dropArea.classList.add("highlight");
+  }
+  
+  function unhighlight(e) {
+    dropArea.classList.remove("highlight");
+  }
+
+  function handleDrop(e) {
+    let dt = e.dataTransfer;
+    let files = dt.files;
+  
+    uploadFileSpecific(files);
+  }
+  
+  
+
 function addFile(){
   var fileInputField = document.getElementById("fileInput");
   fileInputField.click();
@@ -19,6 +60,39 @@ function addFile(){
 function uploadFile() {
     const fileInput = document.getElementById('fileInput');
     const file = fileInput.files[0]; // Get the first file from the input
+    
+    if (!file)
+    {
+      console.log("No file selected");
+      return;
+    }
+
+    if (!file.name.split('.')[1] == '.zip')
+    {
+      console.log("Not a Zip file");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      const byteData = new Uint8Array(event.target.result);
+
+      const eocdIndex = findZipHeader(byteData);
+
+      const centralDirectoryOffset = findCentralDirectoryOffset(byteData, eocdIndex);
+
+      const list = printCentralDirectory(byteData, centralDirectoryOffset);
+
+      const root = constructFileSystem(list);
+      console.log(root);
+    };
+
+    reader.readAsArrayBuffer(file);
+  };
+
+  function uploadFileSpecific(object) {
+    //const fileInput = document.getElementById('fileInput');
+    const file = object[0];
     
     if (!file)
     {
