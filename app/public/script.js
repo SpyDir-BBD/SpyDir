@@ -13,7 +13,7 @@ document.getElementById("uploadIcon").addEventListener("click", addFile);
 document.getElementById("browseLink").addEventListener("click",addFile);
 document.getElementById("historyLink").addEventListener("click",handleHistory);
 
-function addFile(){
+function addFile() {
   var fileInputField = document.getElementById("fileInput");
   fileInputField.click();
 }

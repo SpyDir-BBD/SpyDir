@@ -24,44 +24,68 @@ class ConnectDB {
         }
     }
 
-    getThemes(callback) {
-        this.pool.query('SELECT * FROM themes', callback);
+    async getThemes() {
+        const result = await this.pool.query('SELECT * FROM themes');
+        return result.rows;
     }
 
-    getTheme(theme_id, callback) {
-        this.pool.query('SELECT * FROM themes WHERE id = $1', [theme_id], callback);
+    async getTheme(theme_id) {
+        const result = await this.pool.query('SELECT * FROM themes WHERE id = $1', [theme_id]);
+        return result.rows[0];
     }
 
-    async checkUserExists(username, callback) {
-        await this.pool.query('SELECT COUNT(*) AS user_count FROM Users WHERE username = $1', [username], callback);
+    async checkUserExists(username) {
+        const result = await this.pool.query('SELECT COUNT(*) AS user_count FROM Users WHERE username = $1', [username]);
+        if (result.rows[0]["user_count"]==1) {
+            return true;
+        }
+        return false;
     }
 
-    async getUserByUsername(username, callback) {
-        await this.pool.query('SELECT * FROM Users WHERE username = $1', [username], callback);
+    async getUserByUsername(username) {
+        const result = await this.pool.query('SELECT * FROM Users WHERE username = $1', [username]);
+        var data = {
+            "message" : "User already exists in database",
+            "user_details" : result.rows[0]
+        };
+        return data;
     }
 
-    addUser(username, theme_id, callback) {
-        this.pool.query('INSERT INTO Users (username, themepreference) VALUES ($1, $2) RETURNING *', [username, theme_id], callback);
+    async addUser(username, theme_id) {
+        const result = await this.pool.query('INSERT INTO Users (username, themepreference) VALUES ($1, $2) RETURNING *', [username, theme_id]);
+        var data = {
+            "message" : "User already exists in database",
+            "user_details" : result.rows[0]
+        };
+        return data;
     }
 
-    getFileTypes(callback) {
-        this.pool.query('SELECT * FROM filetypes', callback);
+    async getFileTypes() {
+        const result = await this.pool.query('SELECT * FROM filetypes');
+        return result.rows;
     }
 
-    getHistory(callback) {
-        this.pool.query('SELECT * FROM history', callback);
+    async getHistory() {
+        const result = await this.pool.query('SELECT * FROM history');
+        return result.rows;
     }
 
-    getUserHistory(user_id, callback) {
-        this.pool.query('SELECT * FROM themes WHERE id = $1', [user_id], callback);
+    getUserHistory(user_id) {
+        this.pool.query('SELECT * FROM themes WHERE id = $1', [user_id]);
     }
 
-    async getFileTypeByName(name, callback) {
-        await this.pool.query('SELECT * FROM filetypes WHERE filename = $1', [name], callback);
+    async getFileIdByName(name) {
+        const result = await this.pool.query('SELECT * FROM filetypes WHERE filename = $1', [name]);
+        console.log(result);
+        console.log("====================================");
+        return result.rows[0];
     }
 
-    postFileUpload(filename, maintype, user_id, callback) {
-        this.pool.query('INSERT INTO history (filename, mainfiletype, userid, datecreated) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)', [filename, maintype, user_id], callback);
+    async postFileUpload(filename, maintype, user_id) {
+        const result = await this.pool.query('INSERT INTO history (filename, mainfiletype, userid, datecreated) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)', [filename, maintype, user_id]);
+        console.log(result);
+        console.log("====================================");
+        return result;
     }
 }
 

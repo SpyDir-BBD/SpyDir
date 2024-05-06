@@ -57,8 +57,8 @@ var server = app.listen(5000);
 console.log('App now running on url http://localhost:5000');
 // db connection and db endpoints
 
-const pool = new ConnectDB(process.env.DB_USER, process.env.DB_HOST, process.env.DB_NAME, process.env.DB_PASSWORD);
-pool.connect();
+const db_cliient = new ConnectDB(process.env.DB_USER, process.env.DB_HOST, process.env.DB_NAME, process.env.DB_PASSWORD);
+db_cliient.connect();
 
 app.post('/api/user', async (req, res) => {
   // brearer has 7 characters
@@ -71,73 +71,69 @@ app.post('/api/user', async (req, res) => {
   else {
     //console.log( await JSON.parse(req.body));
     req.body = JSON.parse(req.body);
-    var username = await req.body["username"];
-    var theme_id = await req.body["theme_id"];
+    var username = req.body["username"];
+    var theme_id = req.body["theme_id"];
 
-    if (await pool.checkUserExists(username, async (error, response) => {
-      //console.log(response);
-      //console.log(await response.rows[0]["user_count"]);
-      if (response.rows[0]["user_count"]==1) {
-        await pool.getUserByUsername(username, async (error, response) => {
-          var data = {
-            "message" : "User already exists in database",
-            "user_details" : response.rows[0]
-          };
-          console.log(data);
-          res.status(208).header('Content-Type', 'application/json').send(JSON.stringify(data)); // status code 409 is used if resource already exists
-        });
-      }
-      else {
-        pool.addUser(username, theme_id, (error, response) => {
-          if (error) {
-            console.log(error);
-            res.status(500).header('Content-Type', 'application/json').send(JSON.stringify({"message" : error})); // status code 500 = internal server error
-          }
-          else {
-            console.log(response.rows);
-            var data = {
-              "message" : "User already exists in database",
-              "user_details" : response.rows[0]
-            };
-            res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(data));
-          }
-        });
-      }
-    }));
+    let check;
+    await db_cliient.checkUserExists(username)
+    .then( (val) => {
+      console.log(val);
+      check = val;
+    }) 
+    .catch(err => console.log(err));
+
+    if (check) {
+      await db_cliient.getUserByUsername(username)
+      .then( (data) => {
+        console.log(data);
+        res.status(208).header('Content-Type', 'application/json').send(JSON.stringify(data)); // status code 409 is used if resource already exists
+      })
+      .catch(err => console.log(err));
+    }
+    else {
+      await db_cliient.addUser(username, theme_id)
+      .then( (db_result) => {
+        console.log(db_result);
+        res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(db_result));
+      })
+      .catch( (err) => {
+        console.log(err);
+        res.status(500).header('Content-Type', 'application/json').send(JSON.stringify({"message" : err})); // status code 500 = internal server error
+      });
+    };
   }
 });
 
-app.get('/api/themes', (req, res) => {
-  pool.getThemes( (error, response) => {
-    if (error) {
-      console.log(error);
-      res.status(404).header('Content-Type', 'application/json').send(JSON.stringify(error));
-    }
-    console.log(response.rows);
-    res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(response.rows));
+app.get('/api/themes', async (req, res) => {
+  await db_cliient.getThemes()
+  .then( (db_result) => {
+    console.log(db_result);
+    res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(db_result));
+  })
+  .catch( (err) => {
+    console.log(err);
+    res.status(404).header('Content-Type', 'application/json').send(JSON.stringify({"message" : err}));
   });
 });
 
-app.get('/api/filetypes', (req, res) => {
-  pool.getFileTypes( (error, response) => {
-    if (error) {
-      console.log(error);
-      res.status(404).header('Content-Type', 'application/json').send(JSON.stringify(error));
-    }
-    console.log(response.rows);
-    res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(response.rows));
+app.get('/api/filetypes', async (req, res) => {
+  await db_cliient.getFileTypes()
+  .then( (db_result) => {
+    res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(db_result));
+  })
+  .catch( (err) => {
+    res.status(404).header('Content-Type', 'application/json').send(JSON.stringify({"message" : err}));
   });
 });
 
 // access token is not required to view history
-app.get('/api/history', (req, res) => {
-  pool.getHistory( (error, response) => {
-    if (error) {
-      console.log(error);
-      res.status(404).header('Content-Type', 'application/json').send(JSON.stringify(error));
-    }
-    console.log(response.rows);
-    res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(response.rows));
+app.get('/api/history', async (req, res) => {
+  await db_cliient.getHistory()
+  .then( (db_result) => {
+    res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(db_result));
+  })
+  .catch( (err) => {
+    res.status(404).header('Content-Type', 'application/json').send(JSON.stringify({"message" : err}));
   });
 });
 
@@ -145,30 +141,33 @@ app.get('/api/history', (req, res) => {
 app.post('/api/uploadfile', async (req, res) => {
   req.body = JSON.parse(req.body);
 
-  var maintype = await req.body["maintype"];
-  var filename = await req.body["filename"];
-  var user_id = await req.body["userid"];
+  var maintype = req.body["maintype"];
+  var filename = req.body["filename"];
+  var user_id = req.body["userid"];
 
   console.log(filename);
   console.log(maintype);
   console.log(user_id);
 
-  pool.getFileTypeByName(maintype, async (error, response) => {
-    //console.log(response);
-    //console.log(error);
-    var maintype_id = response.rows[0]["id"];
-    //res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(response.rows));
+  let maintype_id;
+  await db_cliient.getFileIdByName(maintype)
+  .then( (db_result) => {
+    console.log(db_result);
+    maintype_id = db_result["id"];
+  })
+  .catch( (err) => {
+    console.log(err);
+    res.status(404).header('Content-Type', 'application/json').send(JSON.stringify({"message" : err}));
+  });
 
-    pool.postFileUpload(filename, maintype_id, user_id, (error, response) => {
-      if (error) {
-        //console.log(error);
-        res.status(404).header('Content-Type', 'application/json').send(JSON.stringify(error));
-      }
-      else {
-        console.log(response);
-        res.status(200).header('Content-Type', 'application/json').send(JSON.stringify({ 'message': 'file added successfully.' }));
-      }
-    });
+  await db_cliient.postFileUpload(filename, maintype_id, user_id)
+  .then( (db_result) => {
+    console.log(db_result);
+    res.status(200).header('Content-Type', 'application/json').send(JSON.stringify({ 'message': 'file uploaded successfully.' }));
+  })
+  .catch( (err) => {
+    console.log(err);
+    res.status(404).header('Content-Type', 'application/json').send(JSON.stringify({"message" : err}));
   });
 });
 
