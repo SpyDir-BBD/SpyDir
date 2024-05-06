@@ -76,15 +76,15 @@ class ConnectDB {
 
     async getFileIdByName(name) {
         const result = await this.pool.query('SELECT * FROM filetypes WHERE filename = $1', [name]);
-        console.log(result);
-        console.log("====================================");
+        //console.log(result);
+        //console.log("====================================");
         return result.rows[0];
     }
 
     async postFileUpload(filename, maintype, user_id) {
         const result = await this.pool.query('INSERT INTO history (filename, mainfiletype, userid, datecreated) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)', [filename, maintype, user_id]);
-        console.log(result);
-        console.log("====================================");
+        //console.log(result);
+        //console.log("====================================");
         return result;
     }
 }

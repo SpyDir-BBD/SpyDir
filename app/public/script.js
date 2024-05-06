@@ -8,10 +8,47 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 document.getElementById("burgerButton").addEventListener("click",openNav);
-document.getElementById("closeBurger").addEventListener("click",closeNav);
-document.getElementById("uploadIcon").addEventListener("click", addFile);
-document.getElementById("browseLink").addEventListener("click",addFile);
-document.getElementById("historyLink").addEventListener("click",handleHistory);
+document.getElementById("closeBurger") .addEventListener("click",closeNav);
+document.getElementById("uploadIcon")  .addEventListener("click",addFile);
+document.getElementById("browseLink")  .addEventListener("click",addFile);
+document.getElementById("historyLink") .addEventListener("click",handleHistory);
+
+async function authGithubLogin() {
+  let url;
+  const loginResponse = await fetch('/github-login', {
+    method: 'GET'
+  })
+  .then( res => res.json())
+  .then( (data) => {
+    //console.log(data);
+    url = data["url"];
+  })
+  .catch( err => console.log(err));
+  window.open(url);
+}
+
+var a = document.getElementById('userName'); 
+a.addEventListener('click', authGithubLogin, false);
+
+window.handleJSONPResponse = (data) => {
+  //console.log('Response data:', data);
+  const accessToken = data.access_token;
+
+  if (accessToken) {
+    AuthManager.instance.access_token = accessToken;
+    AuthManager.instance.setUserInfo();
+  } 
+  else {
+    console.error('Access token not found in the response data');
+  }
+};
+
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+
+if (urlParams.has('code')) {
+  const _ = new AuthManager(urlParams.get('code'));
+}
 
 function addFile() {
   var fileInputField = document.getElementById("fileInput");
@@ -50,7 +87,6 @@ function uploadFile() {
       // Calculate total file count
       const totalFiles = Object.values(extensionCounts).reduce((acc, count) => acc + count, 0);
 
-      // Calculate percentages
       const extensionPercentages = {};
       for (const extension in extensionCounts) {
         const count = extensionCounts[extension];
@@ -118,12 +154,6 @@ function closeNav() {
   document.getElementById("navBar").style.width = "0";
 };
 
-function launchAuth() {
-  const clientID = 'Ov23liaDwohBlKUDcyxf';
-  const url = `https://github.com/login/oauth/authorize?client_id=${clientID}&scope=user,repo,pull_requests:write,pull_requests:read`;
-  window.open(url);
-}
-
 async function handleHistory() {
   const request = await fetch('/api/history', {
     method: 'GET', 
@@ -138,27 +168,4 @@ async function handleHistory() {
 
   })
   .catch( err => console.log(err));
-}
-
-var a = document.getElementById('userName'); 
-a.addEventListener('click', launchAuth, false);
-
-window.handleJSONPResponse = function(data) {
-  //console.log('Response data:', data);
-  const accessToken = data.access_token;
-
-  if (accessToken) {
-    AuthManager.instance.access_token = accessToken;
-    AuthManager.instance.setUserInfo();
-  } 
-  else {
-    console.error('Access token not found in the response data');
-  }
-};
-
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-
-if (urlParams.has('code')) {
-  const _ = new AuthManager(urlParams.get('code'));
 }

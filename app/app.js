@@ -5,6 +5,9 @@ var app = express();
 var cors = require('cors');
 
 let globalAccessToken = ''; // global access token
+const clientId = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
+const redirectUri = 'http://localhost:5000';
 
 app.use(express.json());
 app.use(express.text());
@@ -15,14 +18,25 @@ app.use(express.static(__dirname + '/public'));
 
 // endpoint to render the landing page
 app.get('/', (req, res) => {
-
   res.sendFile(__dirname +  '/public/landing.html');
 });
 
-app.get('/github-data', async (req, res) => {
+app.get('/github-login', async (req, res) => {
+  data = JSON.stringify({
+    "message" : "github login url",
+    "url" : `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=user,repo,pull_requests:write,pull_requests:read`
+  });
+  //console.log(data);
+  res.status(200).send(data);
+});
+
+app.get('/api/github-token', async (req, res) => {
   try {
     console.log('hit');
-    const { clientId, clientSecret, code, redirectUri } = req.query;
+
+    console.log("request: "+ req.headers.authCode);
+    //req.headers = JSON.parse(req.headers);
+    var code = req.headers.authcode;
     
     // Make a request to GitHub API
     const githubUrl = `https://github.com/login/oauth/access_token?client_id=${clientId}&client_secret=${clientSecret}&code=${code}&redirect_uri=${redirectUri}`;
@@ -38,8 +52,9 @@ app.get('/github-data', async (req, res) => {
     globalAccessToken = access_token;
     console.log("access_token = " + globalAccessToken);
     console.log("===========================");
-    // Send the GitHub API response back to the client
-    res.status(200).send(githubData);
+
+    // send access token to client
+    res.status(200).send(access_token);
   } 
   catch (error) {
     console.error('Error:', error);
@@ -128,13 +143,22 @@ app.get('/api/filetypes', async (req, res) => {
 
 // access token is not required to view history
 app.get('/api/history', async (req, res) => {
-  await db_cliient.getHistory()
-  .then( (db_result) => {
-    res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(db_result));
-  })
-  .catch( (err) => {
-    res.status(404).header('Content-Type', 'application/json').send(JSON.stringify({"message" : err}));
-  });
+
+  const requestAccessToken = req.headers.authorization.substring(7, req.headers.authorization.length);
+  //console.log("access_token = " + requestAccessToken);
+
+  if (requestAccessToken !== globalAccessToken) {
+    res.status(403).send(JSON.stringify({ 'error': 'Access token is not valid.' })); // status code 403 = forbidden -> server refuses to authorize user
+  }
+  else {
+    await db_cliient.getHistory()
+    .then( (db_result) => {
+      res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(db_result));
+    })
+    .catch( (err) => {
+      res.status(404).header('Content-Type', 'application/json').send(JSON.stringify({"message" : err}));
+    });
+  }
 });
 
 // access token is not required to view history

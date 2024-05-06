@@ -9,28 +9,20 @@ export class AuthManager {
     }
 
     init(authCode) {
-
         if (authCode) {
-            // Define the OAuth parameters
-            const clientId = 'Ov23liaDwohBlKUDcyxf';
-            const clientSecret = '35fc740302da539577a52b0a40b20ca7caa9d283';
-            const redirectUri = 'http://localhost:5000';
-
-            // Construct the URL for your server-side endpoint
-            const proxyUrl = `http://localhost:5000/github-data?clientId=${clientId}&clientSecret=${clientSecret}&redirectUri=${encodeURIComponent(redirectUri)}&code=${authCode}`;
-
-            // Make a GET request to your server-side endpoint
-            fetch(proxyUrl, {
+            // get access token from api
+            const request = fetch('api/github-token', {
                 method: 'GET',
+                headers: {
+                    "authCode": `${authCode}`
+                }
             })
             .then(response => response.text())
             .then(data => {
-                const access_token = data.split('access_token=')[1].split('&scope')[0];
-
                 console.log('Data:', data);
-                // Process the response data and set access token
-                if (access_token) {
-                    this.access_token = access_token;
+
+                if (data) {
+                    this.access_token = data;
                     this.setUserInfo();
                 } 
                 else {
