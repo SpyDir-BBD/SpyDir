@@ -1,4 +1,4 @@
-const LANGUAGE_EXTENSIONS = {
+export const LANGUAGE_EXTENSIONS = {
     '.js': 'JavaScript',
     '.py': 'Python',
     '.java': 'Java',
@@ -31,6 +31,4 @@ const LANGUAGE_EXTENSIONS = {
     '.yml': 'YAML',
 };
 
-module.exports = [
-    LANGUAGE_EXTENSIONS
-];
+//module.exports = [ LANGUAGE_EXTENSIONS ];

@@ -11,8 +11,7 @@ export class FileObject {
         this.children.push(child);
     }
 
-    addChildren(children)
-    {
+    addChildren(children) {
         for (const child of children)
         {
             this.addChild(child);
@@ -20,17 +19,27 @@ export class FileObject {
     }
 
     countDistinctExtensions() {
+        // function that returns a dictionary that has file extensions as keys
+        // and the value is the number of files that have that extension
         const extensionCount = {};
-        for (const child of this.children) {
-            if (child.type === OBJECT_TYPE.FILE) {
-                const extension = child.name.substring(child.name.lastIndexOf('.'));
+
+        const countExtensions = (node) => { // local recursive function within countDistinctExtensions function
+            if (node.type === OBJECT_TYPE.FILE) {
+                const extension = node.name.substring(node.name.lastIndexOf('.'));
                 if (extensionCount[extension]) {
                     extensionCount[extension]++;
-                } else if (extension.length) {
+                } 
+                else if (extension.length) {
                     extensionCount[extension] = 1;
                 }
+            } 
+            else if (node.type === OBJECT_TYPE.FOLDER) {
+                for (const child of node.children) {
+                    countExtensions(child);
+                }
             }
-        }
+        };
+        countExtensions(this);
         return extensionCount;
     }
 }

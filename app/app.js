@@ -1,17 +1,17 @@
+
+const ConnectDB = require('./src_db/db_conn');
 var express = require('express');
-const { Pool } = require('pg');
 var app = express();
 var cors = require('cors');
 
+let globalAccessToken = ''; // global access token
+
+app.use(express.json());
+app.use(express.text());
+app.use(express.urlencoded({
+  extended: true
+}));
 app.use(express.static(__dirname + '/public'));
-
-// const corsOption = {
-//   origin: true
-// };
-
-// app.use(cors(corsOption));
-
-// app.options('*', cors());
 
 // endpoint to render the landing page
 app.get('/', (req, res) => {
@@ -21,59 +21,153 @@ app.get('/', (req, res) => {
 
 app.get('/github-data', async (req, res) => {
   try {
-      console.log('hit');
-      const { clientId, clientSecret, code, redirectUri } = req.query;
-      
-      // Make a request to GitHub API
-      const githubUrl = `https://github.com/login/oauth/access_token?client_id=${clientId}&client_secret=${clientSecret}&code=${code}&redirect_uri=${redirectUri}`;
-      const githubResponse = await fetch(githubUrl, {headers: {
+    console.log('hit');
+    const { clientId, clientSecret, code, redirectUri } = req.query;
+    
+    // Make a request to GitHub API
+    const githubUrl = `https://github.com/login/oauth/access_token?client_id=${clientId}&client_secret=${clientSecret}&code=${code}&redirect_uri=${redirectUri}`;
+    const githubResponse = await fetch(githubUrl, {
+      headers: {
         'Content-Type': 'application/json'
-    }});
-      const githubData = await githubResponse.text();
-      console.log(githubData);
-      // Send the GitHub API response back to the client
-      res.send(githubData);
-  } catch (error) {
-      console.error('Error:', error);
-      res.status(500).send('Internal Server Error');
+      }
+    });
+    const githubData = await githubResponse.text();
+    const access_token = githubData.split('access_token=')[1].split('&scope')[0];
+    console.log("===========================");
+    //console.log("access_token = " + access_token);
+    globalAccessToken = access_token;
+    console.log("access_token = " + globalAccessToken);
+    console.log("===========================");
+    // Send the GitHub API response back to the client
+    res.status(200).send(githubData);
+  } 
+  catch (error) {
+    console.error('Error:', error);
+    res.status(500).send('Internal Server Error');
   }
 });
 
-//var server = app.listen(process.env.PORT || 5000);
-var server = app.listen(process.env.PORT || 5000, function() {
+/*var server = app.listen(process.env.PORT || 5000, function() {
   var port = server.address().port;
   var url = `http://localhost:${port}`;
   console.log(`App now running on url http://localhost:${port}`);
+});*/
+
+var server = app.listen(5000);
+console.log('App now running on url http://localhost:5000');
+// db connection and db endpoints
+
+const db_cliient = new ConnectDB(process.env.DB_USER, process.env.DB_HOST, process.env.DB_NAME, process.env.DB_PASSWORD);
+db_cliient.connect();
+
+app.post('/api/user', async (req, res) => {
+  // brearer has 7 characters
+  const requestAccessToken = req.headers.authorization.substring(7, req.headers.authorization.length);
+  //console.log("access_token = " + requestAccessToken);
+
+  if (requestAccessToken !== globalAccessToken) {
+    res.status(403).send(JSON.stringify({ 'error': 'Access token is not valid.' })); // status code 403 = forbidden -> server refuses to authorize user
+  }
+  else {
+    //console.log( await JSON.parse(req.body));
+    req.body = JSON.parse(req.body);
+    var username = req.body["username"];
+    var theme_id = req.body["theme_id"];
+
+    let check;
+    await db_cliient.checkUserExists(username)
+    .then( (val) => {
+      console.log(val);
+      check = val;
+    }) 
+    .catch(err => console.log(err));
+
+    if (check) {
+      await db_cliient.getUserByUsername(username)
+      .then( (data) => {
+        console.log(data);
+        res.status(208).header('Content-Type', 'application/json').send(JSON.stringify(data)); // status code 409 is used if resource already exists
+      })
+      .catch(err => console.log(err));
+    }
+    else {
+      await db_cliient.addUser(username, theme_id)
+      .then( (db_result) => {
+        console.log(db_result);
+        res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(db_result));
+      })
+      .catch( (err) => {
+        console.log(err);
+        res.status(500).header('Content-Type', 'application/json').send(JSON.stringify({"message" : err})); // status code 500 = internal server error
+      });
+    };
+  }
 });
 
-// const pool = new Pool({
-//   user: process.env.DB_USER,
-//   host: process.env.DB_HOST,
-//   database: process.env.DB_NAME,
-//   password: process.env.DB_PASSWORD,
-//   port: 5432, 
-//   ssl: {
-//     rejectUnauthorized: false
-//   }
-// });
+app.get('/api/themes', async (req, res) => {
+  await db_cliient.getThemes()
+  .then( (db_result) => {
+    console.log(db_result);
+    res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(db_result));
+  })
+  .catch( (err) => {
+    console.log(err);
+    res.status(404).header('Content-Type', 'application/json').send(JSON.stringify({"message" : err}));
+  });
+});
 
-// pool.connect();
+app.get('/api/filetypes', async (req, res) => {
+  await db_cliient.getFileTypes()
+  .then( (db_result) => {
+    res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(db_result));
+  })
+  .catch( (err) => {
+    res.status(404).header('Content-Type', 'application/json').send(JSON.stringify({"message" : err}));
+  });
+});
 
-// Create a JSON user object
-//const user = {
-//  username: 'John Doe',
-//  email: 'johndoe@gmail.com'
-//};
-//
-//pool.query('INSERT INTO Users (UserName, Email, DateCreated) VALUES ($1, $2, CURRENT_TIMESTAMP) RETURNING *', [user.username, user.email], (err, result) => {
-//  if (err) {
-//    console.error('Error inserting user:', err);
-//    return;
-//  }
-//  
-//  console.log('User inserted successfully:', result.rows[0]);
-//});
+// access token is not required to view history
+app.get('/api/history', async (req, res) => {
+  await db_cliient.getHistory()
+  .then( (db_result) => {
+    res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(db_result));
+  })
+  .catch( (err) => {
+    res.status(404).header('Content-Type', 'application/json').send(JSON.stringify({"message" : err}));
+  });
+});
 
-// - Store new user
-// - Get / Set zip user history
-// - Get Themes
+// access token is not required to view history
+app.post('/api/uploadfile', async (req, res) => {
+  req.body = JSON.parse(req.body);
+
+  var maintype = req.body["maintype"];
+  var filename = req.body["filename"];
+  var user_id = req.body["userid"];
+
+  console.log(filename);
+  console.log(maintype);
+  console.log(user_id);
+
+  let maintype_id;
+  await db_cliient.getFileIdByName(maintype)
+  .then( (db_result) => {
+    console.log(db_result);
+    maintype_id = db_result["id"];
+  })
+  .catch( (err) => {
+    console.log(err);
+    res.status(404).header('Content-Type', 'application/json').send(JSON.stringify({"message" : err}));
+  });
+
+  await db_cliient.postFileUpload(filename, maintype_id, user_id)
+  .then( (db_result) => {
+    console.log(db_result);
+    res.status(200).header('Content-Type', 'application/json').send(JSON.stringify({ 'message': 'file uploaded successfully.' }));
+  })
+  .catch( (err) => {
+    console.log(err);
+    res.status(404).header('Content-Type', 'application/json').send(JSON.stringify({"message" : err}));
+  });
+});
+
