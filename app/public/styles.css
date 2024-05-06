@@ -85,6 +85,39 @@ body{
     align-content: center;
 }
 
+/* Start - File Upload History Styling */
+.uploadHistoryTable {
+  width: 90%; 
+  height: 80%;
+  margin: auto;
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 1rem;
+}
+
+th {
+  border-bottom: 0.2rem solid #616161;
+  position: sticky;
+  top: 0;
+  background-color: #FFFFFF; 
+}
+
+tr:not(:first-child) {
+  border-top: 0.15rem solid #D6D6D6;
+}
+
+/* End - File Upload History Styling */
+
 .navList{
   list-style-type: none;
 }
