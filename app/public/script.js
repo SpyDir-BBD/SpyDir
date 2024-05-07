@@ -217,7 +217,7 @@ function handleHome(){
   showContainer(uploadContainer);
 }
 
-function addHistoryRow(item1,item2,item3) {
+function addHistoryRow(item) {
   let table = document.getElementById("historyTable");
 
   let row = table.insertRow(-1); 
@@ -226,9 +226,9 @@ function addHistoryRow(item1,item2,item3) {
   let col2 = row.insertCell(1);
   let col3 = row.insertCell(2);
 
-  col1.innerText = item1; //FileName
-  col2.innerText = item2; //MainFileType
-  col3.innerText = item3; //DateUploaded
+  col1.innerText = item.filename; //FileName
+  col2.innerText = item.mainfiletype; //MainFileType
+  col3.innerText = item.datecreated; //DateUploaded
 }
 
 async function handleHistory() {
@@ -245,6 +245,7 @@ clearHistoryTable();
   .then( (data) => {
     // data contains a json list of files that were uploaded, operations on the list can be done here
     console.log(data);
+    data.forEach(addHistoryRow);
 
   })
   .catch( err => console.log(err));
