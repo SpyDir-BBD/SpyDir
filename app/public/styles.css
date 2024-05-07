@@ -12,6 +12,14 @@ body{
     background-color: var(--mainBackground);
 }
 
+#loginDesc{
+  width:60%;
+  font-weight: normal;
+  margin: auto;
+  padding: 1rem;
+  text-overflow: clip;
+}
+
 .outerFlex-1{
     display:flex;
     /* background-color: red; */
@@ -46,16 +54,17 @@ body{
 
 .upload-boxFlex{
     width: 60%;
-    height: 30rem;
+    /* height: 30rem; */
     background-color: rgb(255, 255, 255);
     border-radius: 0.1rem;
     margin: auto;
     box-shadow: 0 0.1rem 0.5rem rgb(0 0 0 / 0.2);
+    padding: 0.5rem;
 }
 
 .shadowCard{
   width: 60%;
-  height: 30rem;
+  /* height: 30rem; */
   background-color: rgb(255, 255, 255);
   border-radius: 0.1rem;
   margin: auto;
@@ -83,6 +92,23 @@ body{
     margin: auto;
     text-align: center;
     align-content: center;
+}
+
+.showFile{
+  background-color: var(--veryLightBlue);
+  border-radius: 0.1rem;
+  border-style: dashed;
+  border-width: 0.1rem;
+  border-color: var(--darkerBlue);
+  margin:auto;
+  margin-top:0.5rem;
+  text-align: center;
+  align-content: center;
+  width: 50%;  
+  display:flex;
+  padding-left: 0.6rem;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* Start - File Upload History Styling */
@@ -162,18 +188,19 @@ cursor: pointer;
 }
 
 #drop-area.highlight{
-  /* background-color: red; */
   background-color: var(--darkerBlue);
 }
 
 #burgerButton{
     padding: 0.2rem;
-    font-size: 1.3rem;
+    font-size: 2rem;
+    transition: 0.4s;
 }
 
 #burgerButton:hover {
 transform: scale(1.2);
 cursor: pointer;
+transition: 0.4s;
 }
 
 #uploadIcon{
@@ -187,6 +214,27 @@ cursor: pointer;
 }
 
 #browseLink:hover{
+  color:var(--darkerBlue);
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+#loginLink{
+  text-decoration: underline;
+  padding: 0.2rem;
+  transition: 0.5s;
+  color: rgba(72, 62, 168, 1);
+}
+
+.webDescText{
+  padding: 1rem;
+}
+
+.boldThis{
+  font-weight: bold;
+}
+
+#loginLink:hover{
   color:var(--darkerBlue);
   transition: 0.5s;
   cursor: pointer;
@@ -218,14 +266,61 @@ cursor: pointer;
 
 #closeBurger{
   padding: 0.4rem;
-  font-size:1.3rem;
+  font-size:2rem;
+  transition: 0.4s;
 }
 
 #closeBurger:hover{
   transform: scale(1.2);
   cursor: pointer;
+  transition: 0.4s;
 }
 
 #navUserName{
   padding:1rem;
+}
+
+#fileTypeListTest{
+  list-style-type: none;
+}
+
+#fileTypeList{
+  list-style-type: none;
+}
+
+.innerBarItem{
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+}
+.innerBarItem li{
+  margin-left:-2rem;
+}
+
+.outerBarItem{
+  background-color: pink;
+  margin: 0.3rem;
+  padding: 0.4rem;
+  border-radius: 0.4rem;
+  min-width: 7rem;
+}
+
+#loginButton{
+  background-color: rgba(72, 62, 168, 1);
+  color: white;
+  border-radius: 0.3rem;
+  padding: 0.5rem;
+  text-decoration: none;
+  width: 4.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  letter-spacing: 0.05rem;
+  transition: 0.4s;
+
+}
+
+#loginButton:hover{
+  transform: scale(1.1);
+  transition: 0.4s;
+cursor: pointer;
 }

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SpyDir</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="https://kit.fontawesome.com/a9db5c0ddd.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 </head>
@@ -18,8 +19,11 @@
                 <i class="fa-solid fa-spider"></i><h1 id="mainTitle">SpyDir Zip Viewer</h1>
             </section>
             <section class="headerItem">
-                <h2 id="userName">Click to Login</h2>
-                <i id="burgerButton" class="fa-solid fa-bars"></i>
+                <h2 id="userName"></h2>
+                <a id="loginButton">LOGIN</a>
+                <span id="burgerButton" class="material-symbols-outlined">
+                    menu
+                    </span>
             </section>
         </section>
     </section>
@@ -28,24 +32,33 @@
             <h3 id="zipUploadTitle">Zip Upload</h3>
             <section class="innerUpload-boxFlex" id="drop-area"">
               <input type="file" id="fileElem" onchange="handleFiles(this.file)">
-                <i id="uploadIcon" class="fa-solid fa-cloud-arrow-up"></i>
+                <span id="uploadIcon" class="material-symbols-outlined">
+                    cloud_upload
+                    </span>
                 <section class="uploadDescHolder">
                     <h4 class="center">Drag & drop file or <a id="browseLink">Browse</a></h4>
                 </section>
+            </section>
+            <section id="fileBlockHolder" class="showFile hidden">
+            <p id="fileNameText"></p>
+            <span class="material-symbols-outlined">delete_forever</span>
+            </section>
+            <section class="uploadDescHolder">
+                <p id="loginDesc">Did you know that logging in allows you to track a history of your zip file uploads? To take advantage of this feature,<a id="loginLink">Login Now!</a></p>
             </section>
         </section>
     </section>
     <section id="fileListContainer" class="outerFlex-2 ">
       <section class="shadowCard">
-        <h3 class="cardTitle">File Stuff</h3>
+        <h3 class="cardTitle">File Hierarchy</h3>
       </section>
     </section>
     <section id="pieChartContainer" class="outerFlex-2 ">
       <section class="shadowCard">
-        <h3 class="cardTitle">Pie Chart Tings</h3>
-        <svg width="100" height="100">
-          <circle r="30" cx="50" cy="50" />
-          </svg>
+        <h3 class="cardTitle">File Type Distribution</h3>
+        <ul id="fileTypeList">
+
+        </ul>
       </section>
     </section>
     <section id="historyContainer" class="outerFlex-2 ">
@@ -137,18 +150,35 @@
           </section>
       </section>
   </section>
+  <section id="webDescContainer" class="outerFlex-2 ">
+    <section class="shadowCard webDescText">
+      <h3 >Welcome to SpyDir Zip Viewer!</h3>
+      <h3>Discover What's Inside Your Zip Files—Instantly</h3>
+      <article>
+        <p>SpyDir Zip Viewer simplifies how you interact with your zip files. Just upload your file, and we'll instantly present a clear breakdown of its contents. Navigate through folders, explore detailed structures, and visualize data with dynamic charts—all from your browser.</p>
+        <h3>Enhanced Features for Registered Users:</h3>
+        <p>Logged-in users can access their history of uploads and get insights into the most common file types within their zip files. Stay organized and informed with every upload.</p>
+        <h3>Quick Start Guide:</h3>
+        <ol>
+            <li><p class="boldThis">Drag & Drop:</p> Upload your zip file by dragging it to our webpage.</li>
+            <li><p class="boldThis">Instant Breakdown:</p> View the file and folder structure through an intuitive list or a graphical chart.</li>
+            <li><p class="boldThis">Explore More: Logged in?</p> Head to the sidebar to review your upload history and file analytics.</li>
+        </ol>
+      </article>
+    </section>
+  </section>
    </section>
-   <input type="file" id="fileInput">
-   <button>
+   <input class="hidden" type="file" id="fileInput">
+   <button class="hidden">
      Upload File
    </button>
    <nav class="navBar" id="navBar">
-    <i id="closeBurger" class="fa-solid fa-bars"></i>
-    <h2 id="navUserName" onclick="launchAuth()">Click to Login</h2>
+    <span id="closeBurger" class="material-symbols-outlined">menu</span>
+    <h2 id="navUserName" onclick="launchAuth()"></h2>
     <ul class="navList">
-      <li class="listFlex" id="homeLink"><i class="fa-solid fa-house"></i><h3 class="listIcon">Home</h3></li>
-      <li class="listFlex" id="historyLink"><i class="fa-solid fa-clock-rotate-left"></i><h3 class="listIcon">History</h3></li>
-      <li class="listFlex"><i class="fa-solid fa-right-from-bracket"></i><h3 class="listIcon">Logout</h3></li>
+      <li class="listFlex" id="homeLink"><span class="material-symbols-outlined">home</span><h3 class="listIcon">Home</h3></li>
+      <li class="listFlex" id="historyLink"><span class="material-symbols-outlined">history</span><h3 class="listIcon">History</h3></li>
+      <li class="listFlex"><span class="material-symbols-outlined">logout</span><h3 class="listIcon">Logout</h3></li>
     </ul>
    </nav>
 </body>

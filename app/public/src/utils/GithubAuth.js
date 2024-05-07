@@ -99,6 +99,8 @@ export class AuthManager {
                 //console.log("============================");
                 this.user_id = data["user_details"]["id"];
                 this.theme_id = data["user_details"]["themepreference"];
+                document.getElementById("loginButton").classList.add("hidden");
+                document.getElementById("loginDesc").classList.add("hidden");
             })
             .catch( err => console.log(err));
 

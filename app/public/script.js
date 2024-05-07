@@ -7,12 +7,45 @@ document.addEventListener("DOMContentLoaded", function() {
   document.querySelector("button").addEventListener("click", uploadFile);
 });
 
+const graphColors = [
+  'rgba(255, 209, 220, 1)',
+  'rgba(226, 222, 243, 1)',
+  'rgba(204, 255, 204, 1)',
+  'rgba(255, 229, 204, 1)',
+  'rgba(214, 234, 248, 1)',
+  'rgba(255, 204, 204, 1)',
+  'rgba(238, 130, 238, 1)',
+  'rgba(221, 160, 221, 1)',
+  'rgba(255, 182, 193, 1)',
+  'rgba(240, 230, 140, 1)',
+  'rgba(152, 251, 152, 1)',
+  'rgba(173, 216, 230, 1)',
+  'rgba(240, 255, 255, 1)',
+  'rgba(135, 206, 250, 1)',
+  'rgba(255, 105, 180, 1)',
+  'rgba(240, 128, 128, 1)',
+  'rgba(144, 238, 144, 1)',
+  'rgba(173, 216, 230, 1)',
+  'rgba(255, 240, 245, 1)',
+  'rgba(240, 255, 255, 1)'
+];
+
+
 document.getElementById("burgerButton").addEventListener("click",openNav);
+document.getElementById("burgerButton").classList.add("hidden");
+
 document.getElementById("closeBurger").addEventListener("click",closeNav);
 document.getElementById("uploadIcon").addEventListener("click", addFile);
 document.getElementById("browseLink").addEventListener("click",addFile);
+document.getElementById("loginLink").addEventListener('click', launchAuth, false);
 document.getElementById("historyLink").addEventListener("click",handleHistory);
 document.getElementById("homeLink").addEventListener("click",handleHome);
+document.getElementById("fileInput").addEventListener("change",uploadFile);
+
+
+var loginButton = document.getElementById('loginButton'); 
+loginButton.addEventListener('click', launchAuth, false);
+
 
 let dropArea = document.getElementById("drop-area");
   dropArea.addEventListener("dragenter", handleDrop, false);
@@ -25,10 +58,12 @@ let dropArea = document.getElementById("drop-area");
   let pieChartContainer = document.getElementById("pieChartContainer");
   let uploadContainer = document.getElementById("uploadContainer");
   let fileListContainer = document.getElementById("fileListContainer");
+  let webDescContainer = document.getElementById("webDescContainer");
+  let fileNameHolder = document.getElementById("fileNameText");
 
   hideAll();
   showContainer(uploadContainer);
-
+  showContainer(webDescContainer);
 
 
   ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
@@ -42,7 +77,6 @@ let dropArea = document.getElementById("drop-area");
 
   ["dragenter", "dragover"].forEach(eventName => {
     dropArea.addEventListener(eventName, highlight, false);
-    console.log("WHATTUPPPP");
   });
   
   ['dragleave', 'drop'].forEach(eventName => {
@@ -57,9 +91,9 @@ let dropArea = document.getElementById("drop-area");
     dropArea.classList.remove("highlight");
   }
 
-  function handleDrop(e) {
-    let dt = e.dataTransfer;
-    let files = dt.files;
+  function handleDrop(item) {
+    let fileDataTransfer = item.dataTransfer;
+    let files = fileDataTransfer.files;
   
     uploadFileSpecific(files);
   }
@@ -69,11 +103,25 @@ let dropArea = document.getElementById("drop-area");
 function addFile(){
   var fileInputField = document.getElementById("fileInput");
   fileInputField.click();
+  uploadFileSpecific(fileInputField.files);
 }
 
 function uploadFile() {
     const fileInput = document.getElementById('fileInput');
     const file = fileInput.files[0]; // Get the first file from the input
+
+    processFile(file);
+    
+   
+  };
+
+  function uploadFileSpecific(object) {
+    const file = object[0]; // Get the first file from the input
+
+    processFile(file);
+  };
+
+  function processFile(file){
     
     if (!file) {
       console.log("No file selected");
@@ -105,21 +153,25 @@ function uploadFile() {
 
       // Calculate percentages
       const extensionPercentages = {};
+      var extensionPercentagesValues =[];
       for (const extension in extensionCounts) {
         const count = extensionCounts[extension];
         const percentage = (count / totalFiles) * 100;
+        extensionPercentagesValues.push(parseFloat(percentage.toFixed(2)));
         extensionPercentages[extension] = percentage.toFixed(2) + '%';
       }
 
       // sort the extensions according the values
       const sortedExtensions = Object.keys(extensionCounts).sort((a, b) => extensionCounts[b] - extensionCounts[a]);
-
+      const sortedExtensionPercentages = extensionPercentagesValues.sort(function(a, b){return b - a});
+      
+      document.getElementById("fileTypeList").replaceChildren();
+      handleFileTypeDisplay(sortedExtensions,sortedExtensionPercentages);
       let mainExtension;
 
       const ext = ['.js','.py','.java','.cpp','.c','.html','.css','.php','.rb','.swift','.ts','.cs','.go','.r','.pl','.sql','.sh','.lua','.jsx','.tsx','.vue','.sass','.scss','.less','.json','.yaml','.xml','.svg','.md','.yml'];
 
       for (const i in sortedExtensions) {
-        //console.log("extension: " + sortedExtensions[e]);
         if (ext.includes(sortedExtensions[i])) {
           mainExtension = sortedExtensions[i];
           console.log("Main File Extension Type:", mainExtension);
@@ -137,6 +189,10 @@ function uploadFile() {
       console.log("Total Files:", totalFiles);
       console.log("Main File Extension Type:", mainExtension);
       console.log("Extension Percentages:", extensionPercentages);
+      document.getElementById("fileBlockHolder").classList.remove("hidden");
+
+      let fileTextNode = document.createTextNode(filename);
+      fileNameHolder.appendChild(fileTextNode);
 
       if (mainExtension !== "undefined") {
         const request = await fetch('/api/uploadfile', {
@@ -161,42 +217,9 @@ function uploadFile() {
       // do not upload file if it does not contain a file extension related to our language extensions
     };
     reader.readAsArrayBuffer(file);
-  };
-
-  function uploadFileSpecific(object) {
-    //const fileInput = document.getElementById('fileInput');
-    const file = object[0];
-    
-    if (!file)
-    {
-      console.log("No file selected");
-      return;
-    }
-
-    if (!file.name.split('.')[1] == '.zip')
-    {
-      console.log("Not a Zip file");
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = function(event) {
-      const byteData = new Uint8Array(event.target.result);
-
-      const eocdIndex = findZipHeader(byteData);
-
-      const centralDirectoryOffset = findCentralDirectoryOffset(byteData, eocdIndex);
-
-      const list = printCentralDirectory(byteData, centralDirectoryOffset);
-
-      const root = constructFileSystem(list);
-      console.log(root);
-    };
-
-    reader.readAsArrayBuffer(file);
     showContainer(pieChartContainer);
     showContainer(fileListContainer);
-  };
+  }
 
 function openNav() {
   document.getElementById("navBar").style.width = "15rem";
@@ -215,6 +238,7 @@ function launchAuth() {
 function handleHome(){
   hideAll();
   showContainer(uploadContainer);
+  showContainer(webDescContainer);
 }
 
 function addHistoryRow(item) {
@@ -244,18 +268,14 @@ clearHistoryTable();
   .then( res => res.json())
   .then( (data) => {
     // data contains a json list of files that were uploaded, operations on the list can be done here
-    console.log(data);
     data.forEach(addHistoryRow);
 
   })
   .catch( err => console.log(err));
 }
 
-var a = document.getElementById('userName'); 
-a.addEventListener('click', launchAuth, false);
 
 window.handleJSONPResponse = function(data) {
-  //console.log('Response data:', data);
   const accessToken = data.access_token;
 
   if (accessToken) {
@@ -283,14 +303,49 @@ for (var i = tableHeaderRowCount; i < rowCount; i++) {
 }
 }
 
+function handleFileTypeDisplay(sortedExtensions,sortedExtensionPercentages){
+  for (let i = 0; i < sortedExtensions.length; i++) {
+
+    const outerBarItemNode = document.createElement("li");
+    const listHolderNode = document.createElement("ul");
+    const innerExtListNode = document.createElement("li");
+    const innerPercentageListNode = document.createElement("li");
+
+    const extensionTextNode = document.createTextNode(sortedExtensions[i]);
+    const percentageTextNote = document.createTextNode(sortedExtensionPercentages[i]  + "%");
+    innerExtListNode.appendChild(extensionTextNode);
+    innerPercentageListNode.appendChild(percentageTextNote);
+
+    listHolderNode.appendChild(innerExtListNode);
+    listHolderNode.appendChild(innerPercentageListNode);
+
+    listHolderNode.classList.add("innerBarItem");
+    outerBarItemNode.classList.add("outerBarItem");
+
+    outerBarItemNode.appendChild(listHolderNode);
+    document.getElementById("fileTypeList").appendChild(outerBarItemNode);
+  }
+
+  let dataTable = document.getElementById("fileTypeList");
+  var children = dataTable.children;
+  for (var i = 0; i < children.length; i++) {
+    length = sortedExtensionPercentages[i]/2;
+    children[i].style.width = length + "rem";
+    children[i].style.backgroundColor = graphColors[i];
+}
+}
+
 
 function hideAll(){
   historyContainer.classList.add("hidden");
   pieChartContainer.classList.add("hidden");
   uploadContainer.classList.add("hidden");
   fileListContainer.classList.add("hidden");
+  webDescContainer.classList.add("hidden");
+
 }
 
 function showContainer(container){
   container.classList.remove("hidden");
 }
+
