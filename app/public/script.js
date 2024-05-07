@@ -214,7 +214,8 @@ function uploadFile() {
       console.log("Extension Percentages:", extensionPercentages);
       document.getElementById("fileBlockHolder").classList.remove("hidden");
 
-      let fileTextNode = document.createTextNode(filename);
+      fileNameHolder.replaceChildren();
+      let fileTextNode = document.createTextNode(filename + ".zip");
       fileNameHolder.appendChild(fileTextNode);
 
       if (mainExtension !== "undefined") {
@@ -297,3 +298,47 @@ clearHistoryTable();
   .catch( err => console.log(err));
 }
 
+function handleFileTypeDisplay(sortedExtensions,sortedExtensionPercentages){
+  for (let i = 0; i < sortedExtensions.length; i++) {
+
+    const outerBarItemNode = document.createElement("li");
+    const listHolderNode = document.createElement("ul");
+    const innerExtListNode = document.createElement("li");
+    const innerPercentageListNode = document.createElement("li");
+
+    const extensionTextNode = document.createTextNode(sortedExtensions[i]);
+    const percentageTextNote = document.createTextNode(sortedExtensionPercentages[i]  + "%");
+    innerExtListNode.appendChild(extensionTextNode);
+    innerPercentageListNode.appendChild(percentageTextNote);
+
+    listHolderNode.appendChild(innerExtListNode);
+    listHolderNode.appendChild(innerPercentageListNode);
+
+    listHolderNode.classList.add("innerBarItem");
+    outerBarItemNode.classList.add("outerBarItem");
+
+    outerBarItemNode.appendChild(listHolderNode);
+    document.getElementById("fileTypeList").appendChild(outerBarItemNode);
+  }
+
+  let dataTable = document.getElementById("fileTypeList");
+  var children = dataTable.children;
+  for (var i = 0; i < children.length; i++) {
+    length = sortedExtensionPercentages[i]/2;
+    children[i].style.width = length + "rem";
+    children[i].style.backgroundColor = graphColors[i];
+}
+}
+
+
+function hideAll(){
+  historyContainer.classList.add("hidden");
+  pieChartContainer.classList.add("hidden");
+  uploadContainer.classList.add("hidden");
+  fileListContainer.classList.add("hidden");
+  webDescContainer.classList.add("hidden");
+}
+
+function showContainer(item){
+  item.classList.remove("hidden");
+}
