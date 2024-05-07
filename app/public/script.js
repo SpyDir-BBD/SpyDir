@@ -31,6 +31,8 @@ const graphColors = [
 ];
 
 
+window.expandOrCollapseFiles = expandOrCollapseFiles;
+
 document.getElementById("burgerButton").addEventListener("click",openNav);
 document.getElementById("burgerButton").classList.add("hidden");
 
@@ -120,6 +122,21 @@ let dropArea = document.getElementById("drop-area");
     let files = fileDataTransfer.files;
   
     uploadFileSpecific(files);
+  }
+
+  function expandOrCollapseFiles(event){
+    let object = event.target;
+    let parent = object.parentElement;
+    let spanHolder =parent.getElementsByTagName("span")[0];
+    let listHolder = parent.getElementsByTagName("ul")[0];
+    if(spanHolder.innerText == "expand_more"){
+      spanHolder.innerText = "expand_less";
+      listHolder.style.maxHeight = "30rem";
+    }
+    else{
+      spanHolder.innerText = "expand_more";
+      listHolder.style.maxHeight = "0rem";
+    }
   }
   
   
