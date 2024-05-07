@@ -162,7 +162,8 @@ cursor: pointer;
 }
 
 #drop-area.highlight{
-  background-color: red;
+  /* background-color: red; */
+  background-color: var(--darkerBlue);
 }
 
 #burgerButton{
