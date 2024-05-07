@@ -1,7 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
 
 :root{
-    --mainBackground: rgba(246, 246, 246, 1);
+    --MainBackground: rgba(246, 246, 246, 1);
+    --Accent: '#5145ba';
+    --CardColor: '#ececec';
+    --CardBorder: 'none';
+    --TextColor: '#000000';
+    --DropAreaColor: '#5145ba04';
+    --DropAreaBorder: '#5145ba4d';
+    --LinkColor: '#5145ba';
+    --LinkAccent: 'none';
+
     --veryLightBlue: rgba(248, 248, 255, 1);
     --darkerBlue: #BFC5EA;
 }
@@ -9,7 +18,11 @@
 
 body{
     font-family: Mulish;
-    background-color: var(--mainBackground);
+    background-color: var(--MainBackground);
+}
+
+* {
+    color: var(--TextColor);
 }
 
 #loginDesc{
@@ -22,7 +35,7 @@ body{
 
 .outerFlex-1{
     display:flex;
-    /* background-color: red; */
+     /* background-color: var(--CardColor); */
     margin: 0.1rem;
     flex-direction: column;
 
@@ -54,8 +67,8 @@ body{
 
 .upload-boxFlex{
     width: 60%;
-    /* height: 30rem; */
-    background-color: rgb(255, 255, 255);
+    height: 30rem;
+    background-color: var(--CardColor);
     border-radius: 0.1rem;
     margin: auto;
     box-shadow: 0 0.1rem 0.5rem rgb(0 0 0 / 0.2);
@@ -101,8 +114,9 @@ padding: 1rem;
 
 .shadowCard{
   width: 60%;
-  /* height: 30rem; */
-  background-color: rgb(255, 255, 255);
+  height: 30rem;
+  background-color: var(--CardColor);
+  border: 1px solid var(--CardBorder);
   border-radius: 0.1rem;
   margin: auto;
   box-shadow: 0 0.1rem 0.5rem rgb(0 0 0 / 0.2);
@@ -119,11 +133,11 @@ padding: 1rem;
 }
 
 .innerUpload-boxFlex{
-    background-color: var(--veryLightBlue);
+    background-color: var(--DropAreaColor);
     border-radius: 0.1rem;
     border-style: dashed;
     border-width: 0.1rem;
-    border-color: var(--darkerBlue);
+    border-color: var(--DropAreaBorder);
     width: 50%;
     height:20rem;
     margin: auto;
@@ -295,7 +309,7 @@ cursor: pointer;
   z-index: 1; 
   top: 0; 
   right: 0;
-  background-color: #ffffff;
+  background-color: var(--MainBackground);
   overflow-x: hidden; 
   padding-top: 6rem; 
   transition: 0.5s; 
@@ -343,9 +357,10 @@ cursor: pointer;
 }
 
 #loginButton{
-  background-color: rgba(72, 62, 168, 1);
+  background-color: var(--LinkColor);
   color: white;
   border-radius: 0.3rem;
+  border: 1px solid var(--LinkAccent);
   padding: 0.5rem;
   text-decoration: none;
   width: 4.5rem;

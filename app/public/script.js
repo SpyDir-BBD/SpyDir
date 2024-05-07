@@ -2,6 +2,9 @@ import { constructFileSystem } from "./src/classes/folderClass.js";
 import { findZipHeader, findCentralDirectoryOffset, printCentralDirectory } from "./src/utils/zipRead.js";
 import { AuthManager } from "./src/utils/GithubAuth.js";
 import { LANGUAGE_EXTENSIONS } from "./src/enums/languageExtensions.js";
+import { Themes } from "./src/enums/styles.js";
+import { setTheme } from "./src/classes/styleSwitcher.js";
+
 
 document.addEventListener("DOMContentLoaded", function() {
   document.querySelector("button").addEventListener("click", uploadFile);
@@ -73,19 +76,19 @@ var loginButton = document.getElementById('loginButton');
 loginButton.addEventListener('click', launchAuth, false);
 
 
-let dropArea = document.getElementById("drop-area");
+const dropArea = document.getElementById("drop-area");
   dropArea.addEventListener("dragenter", handleDrop, false);
   dropArea.addEventListener("dragleave", handleDrop, false);
   dropArea.addEventListener("dragover", handleDrop, false);
   dropArea.addEventListener("drop", handleDrop, false);
 
 
-  let historyContainer = document.getElementById("historyContainer");
-  let pieChartContainer = document.getElementById("pieChartContainer");
-  let uploadContainer = document.getElementById("uploadContainer");
-  let fileListContainer = document.getElementById("fileListContainer");
-  let webDescContainer = document.getElementById("webDescContainer");
-  let fileNameHolder = document.getElementById("fileNameText");
+  const historyContainer = document.getElementById("historyContainer");
+  const pieChartContainer = document.getElementById("pieChartContainer");
+  const uploadContainer = document.getElementById("uploadContainer");
+  const fileListContainer = document.getElementById("fileListContainer");
+  const webDescContainer = document.getElementById("webDescContainer");
+  const fileNameHolder = document.getElementById("fileNameText");
 
   hideAll();
   showContainer(uploadContainer);
@@ -94,7 +97,7 @@ let dropArea = document.getElementById("drop-area");
 
   ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
     dropArea.addEventListener(eventName, preventDefaults, false);
-  })
+  });
   
   function preventDefaults (e) {
     e.preventDefault();
@@ -118,17 +121,17 @@ let dropArea = document.getElementById("drop-area");
   }
 
   function handleDrop(item) {
-    let fileDataTransfer = item.dataTransfer;
-    let files = fileDataTransfer.files;
+    const fileDataTransfer = item.dataTransfer;
+    const files = fileDataTransfer.files;
   
     uploadFileSpecific(files);
   }
 
   function expandOrCollapseFiles(event){
-    let object = event.target;
-    let parent = object.parentElement;
-    let spanHolder =parent.getElementsByTagName("span")[0];
-    let listHolder = parent.getElementsByTagName("ul")[0];
+    const object = event.target;
+    const parent = object.parentElement;
+    const spanHolder =parent.getElementsByTagName("span")[0];
+    const listHolder = parent.getElementsByTagName("ul")[0];
     if(spanHolder.innerText == "expand_more"){
       spanHolder.innerText = "expand_less";
       listHolder.style.maxHeight = "30rem";
@@ -203,7 +206,7 @@ function uploadFile() {
 
       // sort the extensions according the values
       const sortedExtensions = Object.keys(extensionCounts).sort((a, b) => extensionCounts[b] - extensionCounts[a]);
-      const sortedExtensionPercentages = extensionPercentagesValues.sort(function(a, b){return b - a});
+      const sortedExtensionPercentages = extensionPercentagesValues.sort(function(a, b){return b - a;});
       
       document.getElementById("fileTypeList").replaceChildren();
       handleFileTypeDisplay(sortedExtensions,sortedExtensionPercentages);
@@ -232,7 +235,7 @@ function uploadFile() {
       document.getElementById("fileBlockHolder").classList.remove("hidden");
 
       fileNameHolder.replaceChildren();
-      let fileTextNode = document.createTextNode(filename + ".zip");
+      const fileTextNode = document.createTextNode(filename + ".zip");
       fileNameHolder.appendChild(fileTextNode);
 
       if (mainExtension !== "undefined") {
@@ -283,13 +286,13 @@ function handleHome(){
 }
 
 function addHistoryRow(item) {
-  let table = document.getElementById("historyTable");
+  const table = document.getElementById("historyTable");
 
-  let row = table.insertRow(-1); 
+  const row = table.insertRow(-1); 
 
-  let col1 = row.insertCell(0);
-  let col2 = row.insertCell(1);
-  let col3 = row.insertCell(2);
+  const col1 = row.insertCell(0);
+  const col2 = row.insertCell(1);
+  const col3 = row.insertCell(2);
 
   col1.innerText = item.filename; //FileName
   col2.innerText = item.mainfiletype; //MainFileType
@@ -315,6 +318,18 @@ clearHistoryTable();
   .catch( err => console.log(err));
 }
 
+function hideAll(){
+  historyContainer.classList.add("hidden");
+  pieChartContainer.classList.add("hidden");
+  uploadContainer.classList.add("hidden");
+  fileListContainer.classList.add("hidden");
+  webDescContainer.classList.add("hidden");
+}
+
+function showContainer(item){
+  item.classList.remove("hidden");
+}
+
 function handleFileTypeDisplay(sortedExtensions,sortedExtensionPercentages){
   for (let i = 0; i < sortedExtensions.length; i++) {
 
@@ -338,7 +353,7 @@ function handleFileTypeDisplay(sortedExtensions,sortedExtensionPercentages){
     document.getElementById("fileTypeList").appendChild(outerBarItemNode);
   }
 
-  let dataTable = document.getElementById("fileTypeList");
+  const dataTable = document.getElementById("fileTypeList");
   var children = dataTable.children;
   for (var i = 0; i < children.length; i++) {
     length = sortedExtensionPercentages[i]/2;
@@ -347,15 +362,18 @@ function handleFileTypeDisplay(sortedExtensions,sortedExtensionPercentages){
 }
 }
 
+let currentIndex = 0; // Current index of the theme array
+const themesArray = ['Light', 'Night', 'Contrast'];
 
-function hideAll(){
-  historyContainer.classList.add("hidden");
-  pieChartContainer.classList.add("hidden");
-  uploadContainer.classList.add("hidden");
-  fileListContainer.classList.add("hidden");
-  webDescContainer.classList.add("hidden");
+// Function to switch themes
+function switchTheme() {
+    setTheme(Themes[themesArray[currentIndex]]);
+    currentIndex = (currentIndex + 1) % themesArray.length; // Move to the next index, wrapping around
 }
 
-function showContainer(item){
-  item.classList.remove("hidden");
-}
+// Event listener for space bar
+document.addEventListener('keydown', function(event) {
+    if (event.code === 'Space') {
+        switchTheme();
+    }
+});
