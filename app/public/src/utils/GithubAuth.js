@@ -9,28 +9,23 @@ export class AuthManager {
     }
 
     init(authCode) {
-
         if (authCode) {
-            // Define the OAuth parameters
-            const clientId = 'Ov23liaDwohBlKUDcyxf';
-            const clientSecret = '35fc740302da539577a52b0a40b20ca7caa9d283';
-            const redirectUri = 'http://localhost:5000';
-
-            // Construct the URL for your server-side endpoint
-            const proxyUrl = `http://localhost:5000/github-data?clientId=${clientId}&clientSecret=${clientSecret}&redirectUri=${encodeURIComponent(redirectUri)}&code=${authCode}`;
-
-            // Make a GET request to your server-side endpoint
-            fetch(proxyUrl, {
-                method: 'GET',
+            // fetch access token from api
+            const request = fetch('/api/token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "authCode": `${authCode}`
+                })
             })
             .then(response => response.text())
             .then(data => {
-                const access_token = data.split('access_token=')[1].split('&scope')[0];
-
-                console.log('Data:', data);
-                // Process the response data and set access token
-                if (access_token) {
-                    this.access_token = access_token;
+                //console.log('Data:', data);
+                if (data) {
+                    this.access_token = data;
+                    // start hitting api endpoints using access_token
                     this.setUserInfo();
                 } 
                 else {
@@ -95,7 +90,7 @@ export class AuthManager {
             })
             .then( res => res.json())
             .then( (data) => {
-                console.log(data);
+                //console.log(data);
                 //console.log("============================");
                 this.user_id = data["user_details"]["id"];
                 this.theme_id = data["user_details"]["themepreference"];

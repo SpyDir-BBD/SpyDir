@@ -34,11 +34,35 @@ const graphColors = [
 document.getElementById("burgerButton").addEventListener("click",openNav);
 document.getElementById("burgerButton").classList.add("hidden");
 
-document.getElementById("closeBurger").addEventListener("click",closeNav);
-document.getElementById("uploadIcon").addEventListener("click", addFile);
-document.getElementById("browseLink").addEventListener("click",addFile);
+document.getElementById("closeBurger") .addEventListener("click",closeNav);
+document.getElementById("uploadIcon")  .addEventListener("click",addFile);
+document.getElementById("browseLink")  .addEventListener("click",addFile);
 document.getElementById("loginLink").addEventListener('click', launchAuth, false);
-document.getElementById("historyLink").addEventListener("click",handleHistory);
+document.getElementById("historyLink") .addEventListener("click",handleHistory);
+
+async function authGithubLogin() {
+  let url;
+  const loginResponse = await fetch('/github-login', {
+    method: 'GET'
+  })
+  .then( res => res.json())
+  .then( (data) => {
+    //console.log(data);
+    url = data["url"];
+  })
+  .catch( err => console.log(err));
+  window.open(url);
+}
+
+var a = document.getElementById('userName'); 
+a.addEventListener('click', authGithubLogin, false);
+
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+
+if (urlParams.has('code')) {
+  const _ = new AuthManager(urlParams.get('code'));
+}
 document.getElementById("homeLink").addEventListener("click",handleHome);
 document.getElementById("fileInput").addEventListener("change",uploadFile);
 
@@ -151,7 +175,6 @@ function uploadFile() {
       // Calculate total file count
       const totalFiles = Object.values(extensionCounts).reduce((acc, count) => acc + count, 0);
 
-      // Calculate percentages
       const extensionPercentages = {};
       var extensionPercentagesValues =[];
       for (const extension in extensionCounts) {
@@ -272,80 +295,5 @@ clearHistoryTable();
 
   })
   .catch( err => console.log(err));
-}
-
-
-window.handleJSONPResponse = function(data) {
-  const accessToken = data.access_token;
-
-  if (accessToken) {
-    AuthManager.instance.access_token = accessToken;
-    AuthManager.instance.setUserInfo();
-  } 
-  else {
-    console.error('Access token not found in the response data');
-  }
-};
-
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-
-if (urlParams.has('code')) {
-  const _ = new AuthManager(urlParams.get('code'));
-}
-
-function clearHistoryTable(){
-  var tableHeaderRowCount = 1;
-var table = document.getElementById("historyTable");
-var rowCount = table.rows.length;
-for (var i = tableHeaderRowCount; i < rowCount; i++) {
-    table.deleteRow(tableHeaderRowCount);
-}
-}
-
-function handleFileTypeDisplay(sortedExtensions,sortedExtensionPercentages){
-  for (let i = 0; i < sortedExtensions.length; i++) {
-
-    const outerBarItemNode = document.createElement("li");
-    const listHolderNode = document.createElement("ul");
-    const innerExtListNode = document.createElement("li");
-    const innerPercentageListNode = document.createElement("li");
-
-    const extensionTextNode = document.createTextNode(sortedExtensions[i]);
-    const percentageTextNote = document.createTextNode(sortedExtensionPercentages[i]  + "%");
-    innerExtListNode.appendChild(extensionTextNode);
-    innerPercentageListNode.appendChild(percentageTextNote);
-
-    listHolderNode.appendChild(innerExtListNode);
-    listHolderNode.appendChild(innerPercentageListNode);
-
-    listHolderNode.classList.add("innerBarItem");
-    outerBarItemNode.classList.add("outerBarItem");
-
-    outerBarItemNode.appendChild(listHolderNode);
-    document.getElementById("fileTypeList").appendChild(outerBarItemNode);
-  }
-
-  let dataTable = document.getElementById("fileTypeList");
-  var children = dataTable.children;
-  for (var i = 0; i < children.length; i++) {
-    length = sortedExtensionPercentages[i]/2;
-    children[i].style.width = length + "rem";
-    children[i].style.backgroundColor = graphColors[i];
-}
-}
-
-
-function hideAll(){
-  historyContainer.classList.add("hidden");
-  pieChartContainer.classList.add("hidden");
-  uploadContainer.classList.add("hidden");
-  fileListContainer.classList.add("hidden");
-  webDescContainer.classList.add("hidden");
-
-}
-
-function showContainer(container){
-  container.classList.remove("hidden");
 }
 
