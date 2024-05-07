@@ -72,4 +72,4 @@ jobs:
            sudo docker stop my-node-app || true
            sudo docker rm my-node-app || true
            sudo docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-           sudo docker run -d --name my-node-app -p 8080:5000 -e DB_HOST="${{ secrets.DB_HOST }}" -e DB_NAME="${{ secrets.DB_NAME }}" -e DB_USER="${{ secrets.DB_USER }}" -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" $REGISTRY/$REPOSITORY:$IMAGE_TAG
+           sudo docker run -d --name my-node-app -p 8080:5000 -e DB_HOST="${{ secrets.DB_HOST }}" -e DB_NAME="${{ secrets.DB_NAME }}" -e DB_USER="${{ secrets.DB_USER }}" -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" -e CLIENT_ID=${{ secrets.CLIENT_ID }} -e CLIENT_SECRET=${{ secrets.CLIENT_SECRET }} $REGISTRY/$REPOSITORY:$IMAGE_TAG
