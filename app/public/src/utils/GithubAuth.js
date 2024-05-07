@@ -10,19 +10,22 @@ export class AuthManager {
 
     init(authCode) {
         if (authCode) {
-            // get access token from api
-            const request = fetch('api/github-token', {
-                method: 'GET',
+            // fetch access token from api
+            const request = fetch('/api/token', {
+                method: 'POST',
                 headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
                     "authCode": `${authCode}`
-                }
+                })
             })
             .then(response => response.text())
             .then(data => {
-                console.log('Data:', data);
-
+                //console.log('Data:', data);
                 if (data) {
                     this.access_token = data;
+                    // start hitting api endpoints using access_token
                     this.setUserInfo();
                 } 
                 else {

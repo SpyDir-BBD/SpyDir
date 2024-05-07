@@ -30,19 +30,6 @@ async function authGithubLogin() {
 var a = document.getElementById('userName'); 
 a.addEventListener('click', authGithubLogin, false);
 
-window.handleJSONPResponse = (data) => {
-  //console.log('Response data:', data);
-  const accessToken = data.access_token;
-
-  if (accessToken) {
-    AuthManager.instance.access_token = accessToken;
-    AuthManager.instance.setUserInfo();
-  } 
-  else {
-    console.error('Access token not found in the response data');
-  }
-};
-
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 

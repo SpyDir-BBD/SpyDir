@@ -21,6 +21,8 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname +  '/public/landing.html');
 });
 
+/*************************************** Github oauth endpoints ******************************************/
+
 app.get('/github-login', async (req, res) => {
   data = JSON.stringify({
     "message" : "github login url",
@@ -30,13 +32,13 @@ app.get('/github-login', async (req, res) => {
   res.status(200).send(data);
 });
 
-app.get('/api/github-token', async (req, res) => {
+app.post('/api/token', async (req, res) => {
   try {
     console.log('hit');
 
-    console.log("request: "+ req.headers.authCode);
-    //req.headers = JSON.parse(req.headers);
-    var code = req.headers.authcode;
+    //req.body = JSON.parse(req.body);
+    console.log(req.body);
+    var code = req.body["authCode"];
     
     // Make a request to GitHub API
     const githubUrl = `https://github.com/login/oauth/access_token?client_id=${clientId}&client_secret=${clientSecret}&code=${code}&redirect_uri=${redirectUri}`;
@@ -62,15 +64,10 @@ app.get('/api/github-token', async (req, res) => {
   }
 });
 
-/*var server = app.listen(process.env.PORT || 5000, function() {
-  var port = server.address().port;
-  var url = `http://localhost:${port}`;
-  console.log(`App now running on url http://localhost:${port}`);
-});*/
+/*********************************** Database endpoints ********************************************/
 
 var server = app.listen(5000);
 console.log('App now running on url http://localhost:5000');
-// db connection and db endpoints
 
 const db_cliient = new ConnectDB(process.env.DB_USER, process.env.DB_HOST, process.env.DB_NAME, process.env.DB_PASSWORD);
 db_cliient.connect();
@@ -161,7 +158,7 @@ app.get('/api/history', async (req, res) => {
   }
 });
 
-// access token is not required to view history
+// access token is required to upload zip file details
 app.post('/api/uploadfile', async (req, res) => {
   req.body = JSON.parse(req.body);
 
@@ -194,4 +191,3 @@ app.post('/api/uploadfile', async (req, res) => {
     res.status(404).header('Content-Type', 'application/json').send(JSON.stringify({"message" : err}));
   });
 });
-
