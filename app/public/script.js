@@ -74,6 +74,8 @@ function uploadFile() {
       // Calculate total file count
       const totalFiles = Object.values(extensionCounts).reduce((acc, count) => acc + count, 0);
 
+      console.log("extensionCounts: " + JSON.stringify(extensionCounts));
+
       const extensionPercentages = {};
       for (const extension in extensionCounts) {
         const count = extensionCounts[extension];
@@ -83,6 +85,8 @@ function uploadFile() {
 
       // sort the extensions according the values
       const sortedExtensions = Object.keys(extensionCounts).sort((a, b) => extensionCounts[b] - extensionCounts[a]);
+      console.log("==================================================================");
+      console.log("extensionCounts: " + JSON.stringify(extensionCounts));
 
       let mainExtension;
 
@@ -131,7 +135,7 @@ function uploadFile() {
       // do not upload file if it does not contain a file extension related to our language extensions
     };
     reader.readAsArrayBuffer(file);
-  };
+};
 
 function openNav() {
   document.getElementById("navBar").style.width = "15rem";
