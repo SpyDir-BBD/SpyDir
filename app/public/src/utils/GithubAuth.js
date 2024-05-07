@@ -90,7 +90,7 @@ export class AuthManager {
             })
             .then( res => res.json())
             .then( (data) => {
-                console.log(data);
+                //console.log(data);
                 //console.log("============================");
                 this.user_id = data["user_details"]["id"];
                 this.theme_id = data["user_details"]["themepreference"];
