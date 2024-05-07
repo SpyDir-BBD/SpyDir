@@ -122,6 +122,10 @@ tr:not(:first-child) {
   list-style-type: none;
 }
 
+.hidden{
+  display:none;
+}
+
 .listFlex{
   display: flex;
   flex-direction: row;

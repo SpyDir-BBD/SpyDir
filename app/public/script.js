@@ -12,12 +12,24 @@ document.getElementById("closeBurger").addEventListener("click",closeNav);
 document.getElementById("uploadIcon").addEventListener("click", addFile);
 document.getElementById("browseLink").addEventListener("click",addFile);
 document.getElementById("historyLink").addEventListener("click",handleHistory);
+document.getElementById("homeLink").addEventListener("click",handleHome);
 
 let dropArea = document.getElementById("drop-area");
   dropArea.addEventListener("dragenter", handleDrop, false);
   dropArea.addEventListener("dragleave", handleDrop, false);
   dropArea.addEventListener("dragover", handleDrop, false);
   dropArea.addEventListener("drop", handleDrop, false);
+
+
+  let historyContainer = document.getElementById("historyContainer");
+  let pieChartContainer = document.getElementById("pieChartContainer");
+  let uploadContainer = document.getElementById("uploadContainer");
+  let fileListContainer = document.getElementById("fileListContainer");
+
+  hideAll();
+  showContainer(uploadContainer);
+
+
 
   ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
     dropArea.addEventListener(eventName, preventDefaults, false);
@@ -182,6 +194,8 @@ function uploadFile() {
     };
 
     reader.readAsArrayBuffer(file);
+    showContainer(pieChartContainer);
+    showContainer(fileListContainer);
   };
 
 function openNav() {
@@ -198,7 +212,29 @@ function launchAuth() {
   window.open(url);
 }
 
+function handleHome(){
+  hideAll();
+  showContainer(uploadContainer);
+}
+
+function addHistoryRow(item1,item2,item3) {
+  let table = document.getElementById("historyTable");
+
+  let row = table.insertRow(-1); 
+
+  let col1 = row.insertCell(0);
+  let col2 = row.insertCell(1);
+  let col3 = row.insertCell(2);
+
+  col1.innerText = item1; //FileName
+  col2.innerText = item2; //MainFileType
+  col3.innerText = item3; //DateUploaded
+}
+
 async function handleHistory() {
+hideAll();
+showContainer(historyContainer);
+clearHistoryTable();
   const request = await fetch('/api/history', {
     method: 'GET', 
     headers: {
@@ -235,4 +271,25 @@ const urlParams = new URLSearchParams(queryString);
 
 if (urlParams.has('code')) {
   const _ = new AuthManager(urlParams.get('code'));
+}
+
+function clearHistoryTable(){
+  var tableHeaderRowCount = 1;
+var table = document.getElementById("historyTable");
+var rowCount = table.rows.length;
+for (var i = tableHeaderRowCount; i < rowCount; i++) {
+    table.deleteRow(tableHeaderRowCount);
+}
+}
+
+
+function hideAll(){
+  historyContainer.classList.add("hidden");
+  pieChartContainer.classList.add("hidden");
+  uploadContainer.classList.add("hidden");
+  fileListContainer.classList.add("hidden");
+}
+
+function showContainer(container){
+  container.classList.remove("hidden");
 }

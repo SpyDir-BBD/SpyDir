@@ -23,7 +23,7 @@
             </section>
         </section>
     </section>
-    <section class="outerFlex-2">
+    <section id="uploadContainer" class="outerFlex-2">
         <section class="upload-boxFlex" >
             <h3 id="zipUploadTitle">Zip Upload</h3>
             <section class="innerUpload-boxFlex" id="drop-area"">
@@ -35,12 +35,12 @@
             </section>
         </section>
     </section>
-    <section class="outerFlex-2 ">
+    <section id="fileListContainer" class="outerFlex-2 ">
       <section class="shadowCard">
         <h3 class="cardTitle">File Stuff</h3>
       </section>
     </section>
-    <section class="outerFlex-2 ">
+    <section id="pieChartContainer" class="outerFlex-2 ">
       <section class="shadowCard">
         <h3 class="cardTitle">Pie Chart Tings</h3>
         <svg width="100" height="100">
@@ -48,6 +48,95 @@
           </svg>
       </section>
     </section>
+    <section id="historyContainer" class="outerFlex-2 ">
+      <section class="shadowCard">
+          <h3 class="cardTitle">File Upload History</h3>
+          <section class="uploadHistoryTable">
+              <table id="historyTable">
+                  <tr>
+                      <th>File Name</th>
+                      <th>Main File Type</th>
+                      <th>Date Uploaded</th>
+                  </tr>
+                  <tr>
+                      <td>FileName1.zip</td>
+                      <td>.extention1</td>
+                      <td>30/04/2024</td>
+                  </tr>
+                  <tr>
+                      <td>FileName2.zip</td>
+                      <td>.extention2</td>
+                      <td>14/04/2024</td>
+                  </tr>
+                  <tr>
+                      <td>FileName3.zip</td>
+                      <td>.extention3</td>
+                      <td>11/03/2024</td>
+                  </tr>
+                  <tr>
+                      <td>FileName4.zip</td>
+                      <td>.extention3</td>
+                      <td>11/03/2024</td>
+                  </tr>
+                  <tr>
+                      <td>FileName5.zip</td>
+                      <td>.extention3</td>
+                      <td>11/03/2024</td>
+                  </tr>
+                  <tr>
+                      <td>FileName6.zip</td>
+                      <td>.extention3</td>
+                      <td>11/03/2024</td>
+                  </tr>
+                  <tr>
+                      <td>FileName7.zip</td>
+                      <td>.extention3</td>
+                      <td>11/03/2024</td>
+                  </tr>
+                  <tr>
+                      <td>FileName8.zip</td>
+                      <td>.extention3</td>
+                      <td>11/03/2024</td>
+                  </tr>
+                  <tr>
+                      <td>FileName9.zip</td>
+                      <td>.extention3</td>
+                      <td>11/03/2024</td>
+                  </tr>
+                  <tr>
+                      <td>FileName10.zip</td>
+                      <td>.extention3</td>
+                      <td>11/03/2024</td>
+                  </tr>
+                  <tr>
+                      <td>FileName11.zip</td>
+                      <td>.extention3</td>
+                      <td>11/03/2024</td>
+                  </tr>
+                  <tr>
+                      <td>FileName12.zip</td>
+                      <td>.extention3</td>
+                      <td>11/03/2024</td>
+                  </tr>
+                  <tr>
+                      <td>FileName13.zip</td>
+                      <td>.extention3</td>
+                      <td>11/03/2024</td>
+                  </tr>
+                  <tr>
+                      <td>FileName14.zip</td>
+                      <td>.extention3</td>
+                      <td>11/03/2024</td>
+                  </tr>
+                  <tr>
+                      <td>FileName15.zip</td>
+                      <td>.extention3</td>
+                      <td>11/03/2024</td>
+                  </tr>
+              </table>
+          </section>
+      </section>
+  </section>
    </section>
    <input type="file" id="fileInput">
    <button>
@@ -57,7 +146,7 @@
     <i id="closeBurger" class="fa-solid fa-bars"></i>
     <h2 id="navUserName" onclick="launchAuth()">Click to Login</h2>
     <ul class="navList">
-      <li class="listFlex"><i class="fa-solid fa-house"></i><h3 class="listIcon">Home</h3></li>
+      <li class="listFlex" id="homeLink"><i class="fa-solid fa-house"></i><h3 class="listIcon">Home</h3></li>
       <li class="listFlex" id="historyLink"><i class="fa-solid fa-clock-rotate-left"></i><h3 class="listIcon">History</h3></li>
       <li class="listFlex"><i class="fa-solid fa-right-from-bracket"></i><h3 class="listIcon">Logout</h3></li>
     </ul>
