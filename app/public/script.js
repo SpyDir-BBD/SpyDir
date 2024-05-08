@@ -5,7 +5,7 @@ import { LANGUAGE_EXTENSIONS } from "./src/enums/languageExtensions.js";
 import { Themes } from "./src/enums/styles.js";
 import { setTheme } from "./src/classes/styleSwitcher.js";
 
-const ext = ['.js','.py','.java','.cpp','.c','.html','.css','.php','.rb','.swift','.ts','.cs','.go','.r','.pl','.sql','.sh','.lua','.jsx','.tsx','.vue','.sass','.scss','.less','.json','.yaml','.xml','.svg','.md','.yml'];
+const ext = ['.js','.py','.java','.cpp','.c','.html','.css','.php','.rb','.swift','.ts','.cs','.go','.r','.pl','.sql','.sh','.lua','.jsx','.tsx','.vue','.sass','.scss','.less','.json','.yaml','.xml','.svg','.md','.yml', '.other'];
 
 document.addEventListener("DOMContentLoaded", function() {
   document.querySelector("button").addEventListener("click", uploadFile);
@@ -222,22 +222,26 @@ function uploadFile() {
       const sortedExtensionPercentages = extensionPercentagesValues.sort(function(a, b){return b - a;});
       
       document.getElementById("fileTypeList").replaceChildren();
-      handleFileTypeDisplay(sortedExtensions, sortedExtensionPercentages);
-      let mainExtension;
-
-      for (const i in sortedExtensions) {
-        if (ext.includes(sortedExtensions[i])) {
-          mainExtension = sortedExtensions[i];
-          console.log("Main File Extension Type:", mainExtension);
-          break;
-        }
+      let mainExtension = sortedExtensions[0];
+      if (!ext.includes(mainExtension)) { // if main
+        mainExtension = ".other";
+        sortedExtensions[0] = ".other";
       }
+      handleFileTypeDisplay(sortedExtensions, sortedExtensionPercentages);
+
+      //for (const i in sortedExtensions) {
+      //  if (ext.includes(sortedExtensions[i])) {
+      //    mainExtension = sortedExtensions[i];
+      //    console.log("Main File Extension Type:", mainExtension);
+      //    break;
+      //  }
+      //}
 
       // if there are no applicable extensions
-      console.log("Main File Extension Type:", mainExtension);
-      if (!mainExtension) {
-        mainExtension = "undefined";
-      }
+      //console.log("Main File Extension Type:", mainExtension);
+      //if (!mainExtension) {
+      //  mainExtension = "undefined";
+      //}
 
       console.log("Filename:", filename);
       console.log("Total Files:", totalFiles);
@@ -249,25 +253,25 @@ function uploadFile() {
       const fileTextNode = document.createTextNode(filename + ".zip");
       fileNameHolder.appendChild(fileTextNode);
 
-      if (mainExtension !== "undefined") {
-        const request = await fetch('/api/uploadfile', {
-          method: 'POST',
-          headers: {
-            "Authorization": `Bearer ${AuthManager.instance.access_token}`, // access token is required to upload a file
-          },
-          body: JSON.stringify({
-            "filename": `${filename}`,
-            "maintype": `${mainExtension}`,
-            "userid": `${AuthManager.instance.user_id}`
-          })
+      //if (mainExtension !== "undefined") {
+      const request = await fetch('/api/uploadfile', {
+        method: 'POST',
+        headers: {
+          "Authorization": `Bearer ${AuthManager.instance.access_token}`, // access token is required to upload a file
+        },
+        body: JSON.stringify({
+          "filename": `${filename}`,
+          "maintype": `${mainExtension}`,
+          "userid": `${AuthManager.instance.user_id}`
         })
-        .then( res => res.json())
-        .then( (data) => {
-          // data contains a json list of files that were uploaded, operations on the list can be done here
-          console.log(data);
-        })
-        .catch( err => console.log(err));
-      }
+      })
+      .then( res => res.json())
+      .then( (data) => {
+        // data contains a json list of files that were uploaded, operations on the list can be done here
+        console.log(data);
+      })
+      .catch( err => console.log(err));
+      //}
 
       // do not upload file if it does not contain a file extension related to our language extensions
     };
@@ -324,7 +328,7 @@ async function handleHistory() {
     })
     .then( res => res.json())
     .then( (data) => {
-      console.log(data);
+      //console.log(data);
       data.map( (item) => {
         const ft = ext[item.mainfiletype-1];
         const dt = item.datecreated.split('T')[0];
@@ -408,12 +412,12 @@ changeTheme(userPreferredTheme);
 //TODO: SET THIS FROM DATABASE!!!
 
 function createFolder(folderName,items,parent) {
-  console.log("folder name: " + folderName);
-  console.log("items: " + items);
-  console.log("parent: " + parent);
+  //console.log("folder name: " + folderName);
+  //console.log("items: " + items);
+  //console.log("parent: " + parent);
   const folderHolder = document.createElement("section");
   folderHolder.classList.add("folderHolder");
-  console.log("Here!");
+  //console.log("Here!");
 
   const innerFolderHolder = document.createElement("section");
   innerFolderHolder.classList.add("innerFolderHolder");
@@ -440,7 +444,7 @@ function createFolder(folderName,items,parent) {
 
   for (let i = 0; i < items.length; i++) {
     const element = items[i];
-    console.log(element);
+    //console.log(element);
     if(element.type == "FILE"){
       let innerFile = document.createElement("li");
       innerFile.classList.add("innerFile");

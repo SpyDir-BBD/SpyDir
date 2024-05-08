@@ -29,6 +29,7 @@ export const LANGUAGE_EXTENSIONS = {
     '.svg': 'SVG',
     '.md': 'Markdown',
     '.yml': 'YAML',
+    '.other': 'Other'
 };
 
 //module.exports = [ LANGUAGE_EXTENSIONS ];

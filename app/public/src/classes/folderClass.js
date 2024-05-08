@@ -22,27 +22,27 @@ export class FileObject {
         // function that returns a dictionary that has file extensions as keys
         // and the value is the number of files that have that extension
         const extensionCount = {};
-        //const zipFileStructure = {};
 
-        const countExtensions = (node, folderName) => { // local recursive function within countDistinctExtensions function
+        const countExtensions = (node) => { // local recursive function within countDistinctExtensions function
             if (node.type === OBJECT_TYPE.FILE) {
+                //console.log("file_name: " + node.name);
                 const extension = node.name.substring(node.name.lastIndexOf('.'));
-                //zipFileStructure[folderName].push(node.name);
+                //console.log("Extension: " + extension);
+                //console.log("=======================================");
                 if (extensionCount[extension]) {
                     extensionCount[extension]++;
                 } 
-                else {
+                else if (extension.length) {
                     extensionCount[extension] = 1;
                 }
             } 
             else if (node.type === OBJECT_TYPE.FOLDER) {
-                //ipFileStructure[node.name] = [];
                 for (const child of node.children) {
-                    countExtensions(child, node.name);
+                    countExtensions(child);
                 }
             }
         };
-        countExtensions(this, this.name);
+        countExtensions(this, this.children);
         //console.log("extensions: " + JSON.stringify(extensionCount));
         //console.log("zipFileStructure: " + JSON.stringify(zipFileStructure));
         //return { extensionCounts: extensionCount, zipFileStructure: zipFileStructure };
