@@ -24,10 +24,10 @@ class ConnectDB {
         }
     }
 
-    async getThemes() {
-        const result = await this.pool.query('SELECT * FROM themes');
-        return result.rows;
-    }
+    //async getThemes() {
+    //    const result = await this.pool.query('SELECT * FROM themes');
+    //    return result.rows;
+    //}
 
     async getTheme(theme_id) {
         const result = await this.pool.query('SELECT * FROM themes WHERE id = $1', [theme_id]);
@@ -60,18 +60,19 @@ class ConnectDB {
         return data;
     }
 
-    async getFileTypes() {
-        const result = await this.pool.query('SELECT * FROM filetypes');
-        return result.rows;
-    }
+    //async getFileTypes() {
+    //    const result = await this.pool.query('SELECT * FROM filetypes');
+    //    return result.rows;
+    //}
 
-    async getHistory() {
-        const result = await this.pool.query('SELECT * FROM history');
-        return result.rows;
-    }
+    //async getHistory() {
+    //    const result = await this.pool.query('SELECT * FROM history');
+    //    return result.rows;
+    //}
 
-    getUserHistory(user_id) {
-        this.pool.query('SELECT * FROM themes WHERE id = $1', [user_id]);
+    async getUserHistory(user_id) {
+        const result = await this.pool.query('SELECT * FROM history WHERE userid = $1', [user_id]);
+        return result.rows;
     }
 
     async getFileIdByName(name) {
