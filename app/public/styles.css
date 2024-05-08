@@ -193,6 +193,8 @@ tr:not(:first-child) {
 
 .navList{
   list-style-type: none;
+  border-bottom:0.1rem solid rgb(150, 147, 147);
+
 }
 
 .hidden{
@@ -305,7 +307,7 @@ cursor: pointer;
   z-index: 1; 
   top: 0; 
   right: 0;
-  background-color: var(--MainBackground);
+  background-color: var(--CardColor);
   overflow-x: hidden; 
   padding-top: 6rem; 
   transition: 0.5s; 
@@ -378,4 +380,12 @@ cursor: pointer;
   transform: scale(1.1);
   transition: 0.4s;
 cursor: pointer;
+}
+
+.colorSchemeList li{
+  list-style-type: none;
+}
+
+input[type=radio] {
+  accent-color: var(--Accent);
 }
