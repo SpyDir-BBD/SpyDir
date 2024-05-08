@@ -191,6 +191,7 @@ function uploadFile() {
       const list = printCentralDirectory(byteData, centralDirectoryOffset);
       const root = constructFileSystem(list);
       console.log(root);
+      fileHolder.replaceChildren();
       createFolder(root.name,root.children,fileHolder);
       showContainer(fileListContainer);
 
