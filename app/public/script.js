@@ -35,6 +35,7 @@ const graphColors = [
 
 
 window.expandOrCollapseFiles = expandOrCollapseFiles;
+window.handleDrop = handleDrop;
 
 document.getElementById("burgerButton").addEventListener("click",openNav);
 document.getElementById("burgerButton").classList.add("hidden");
@@ -113,15 +114,17 @@ const dropArea = document.getElementById("drop-area");
     dropArea.addEventListener(eventName, unhighlight, false);
   });
   
-  function highlight(e) {
+  function highlight(dropArea) {
     dropArea.classList.add("highlight");
+    console.log("hello???/");
   }
   
-  function unhighlight(e) {
+  function unhighlight(dropArea) {
     dropArea.classList.remove("highlight");
   }
 
   function handleDrop(item) {
+    console.log("????");
     const fileDataTransfer = item.dataTransfer;
     const files = fileDataTransfer.files;
   
@@ -151,17 +154,9 @@ function addFile(){
   uploadFileSpecific(fileInputField.files);
 }
 
-function uploadFile() {
-    const fileInput = document.getElementById('fileInput');
-    const file = fileInput.files[0]; // Get the first file from the input
-
-    processFile(file);
-    
-   
-  };
 
   function uploadFileSpecific(object) {
-    const file = object[0]; // Get the first file from the input
+    const file = object[0];
 
     processFile(file);
   };
