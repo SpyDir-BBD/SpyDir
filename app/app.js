@@ -116,39 +116,18 @@ app.post('/api/user', async (req, res) => {
   }
 });
 
-app.get('/api/themes', async (req, res) => {
-  await db_cliient.getThemes()
-  .then( (db_result) => {
-    console.log(db_result);
-    res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(db_result));
-  })
-  .catch( (err) => {
-    console.log(err);
-    res.status(404).header('Content-Type', 'application/json').send(JSON.stringify({"message" : err}));
-  });
-});
-
-app.get('/api/filetypes', async (req, res) => {
-  await db_cliient.getFileTypes()
-  .then( (db_result) => {
-    res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(db_result));
-  })
-  .catch( (err) => {
-    res.status(404).header('Content-Type', 'application/json').send(JSON.stringify({"message" : err}));
-  });
-});
-
-// access token is not required to view history
 app.get('/api/history', async (req, res) => {
 
   const requestAccessToken = req.headers.authorization.substring(7, req.headers.authorization.length);
+  const user_id = req.headers.user_id;
   //console.log("access_token = " + requestAccessToken);
+  //console.log("user_id = " + user_id);
 
   if (requestAccessToken !== globalAccessToken) {
     res.status(403).send(JSON.stringify({ 'error': 'Access token is not valid.' })); // status code 403 = forbidden -> server refuses to authorize user
   }
   else {
-    await db_cliient.getHistory()
+    await db_cliient.getUserHistory(user_id)
     .then( (db_result) => {
       res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(db_result));
     })
@@ -160,34 +139,42 @@ app.get('/api/history', async (req, res) => {
 
 // access token is required to upload zip file details
 app.post('/api/uploadfile', async (req, res) => {
-  req.body = JSON.parse(req.body);
 
-  var maintype = req.body["maintype"];
-  var filename = req.body["filename"];
-  var user_id = req.body["userid"];
+  const requestAccessToken = req.headers.authorization.substring(7, req.headers.authorization.length);
 
-  console.log(filename);
-  console.log(maintype);
-  console.log(user_id);
+  if (requestAccessToken !== globalAccessToken) {
+    res.status(403).send(JSON.stringify({ 'error': 'Access token is not valid.' })); // status code 403 = forbidden -> server refuses to authorize user
+  }
+  else {
+    req.body = JSON.parse(req.body);
 
-  let maintype_id;
-  await db_cliient.getFileIdByName(maintype)
-  .then( (db_result) => {
-    console.log(db_result);
-    maintype_id = db_result["id"];
-  })
-  .catch( (err) => {
-    console.log(err);
-    res.status(404).header('Content-Type', 'application/json').send(JSON.stringify({"message" : err}));
-  });
+    var maintype = req.body["maintype"];
+    var filename = req.body["filename"];
+    var user_id = req.body["userid"];
 
-  await db_cliient.postFileUpload(filename, maintype_id, user_id)
-  .then( (db_result) => {
-    console.log(db_result);
-    res.status(200).header('Content-Type', 'application/json').send(JSON.stringify({ 'message': 'file uploaded successfully.' }));
-  })
-  .catch( (err) => {
-    console.log(err);
-    res.status(404).header('Content-Type', 'application/json').send(JSON.stringify({"message" : err}));
-  });
+    console.log(filename);
+    console.log(maintype);
+    console.log(user_id);
+
+    let maintype_id;
+    await db_cliient.getFileIdByName(maintype)
+    .then( (db_result) => {
+      console.log(db_result);
+      maintype_id = db_result["id"];
+    })
+    .catch( (err) => {
+      console.log(err);
+      res.status(404).header('Content-Type', 'application/json').send(JSON.stringify({"message" : err}));
+    });
+
+    await db_cliient.postFileUpload(filename, maintype_id, user_id)
+    .then( (db_result) => {
+      console.log(db_result);
+      res.status(200).header('Content-Type', 'application/json').send(JSON.stringify({ 'message': 'file uploaded successfully.' }));
+    })
+    .catch( (err) => {
+      console.log(err);
+      res.status(404).header('Content-Type', 'application/json').send(JSON.stringify({"message" : err}));
+    });
+  }
 });

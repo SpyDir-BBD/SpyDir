@@ -311,27 +311,34 @@ function addHistoryRow(item) {
 }
 
 async function handleHistory() {
-hideAll();
-showContainer(historyContainer);
-clearHistoryTable();
-  const request = await fetch('/api/history', {
-    method: 'GET', 
-    headers: {
-      "Authorization": `Bearer ${AuthManager.instance.access_token}`,
-    },
-  })
-  .then( res => res.json())
-  .then( (data) => {
-    console.log(data);
-    data.map( (item) => {
-      const ft = ext[item.mainfiletype-1];
-      const dt = item.datecreated.split('T')[0];
-      item.mainfiletype = ft;
-      item.datecreated = dt;
-    });
-    data.forEach(addHistoryRow);
-  })
-  .catch( err => console.log(err));
+  hideAll();
+  showContainer(historyContainer);
+  clearHistoryTable();
+  if (AuthManager.instance) {
+    const request = await fetch('/api/history', {
+      method: 'GET', 
+      headers: {
+        "Authorization": `Bearer ${AuthManager.instance.access_token}`,
+        "user_id": AuthManager.instance.user_id
+      }
+    })
+    .then( res => res.json())
+    .then( (data) => {
+      console.log(data);
+      data.map( (item) => {
+        const ft = ext[item.mainfiletype-1];
+        const dt = item.datecreated.split('T')[0];
+        item.mainfiletype = ft;
+        item.datecreated = dt;
+        addHistoryRow(item);
+      });
+    })
+    .catch( err => console.log(err));
+  }
+  else {
+    // tell user to login before requesting history
+    console.log("Tell the user to login before fetching history");
+  }
 }
 
 function hideAll(){
