@@ -4,8 +4,8 @@ import { AuthManager } from "./src/utils/GithubAuth.js";
 import { LANGUAGE_EXTENSIONS } from "./src/enums/languageExtensions.js";
 import { Themes } from "./src/enums/styles.js";
 import { setTheme } from "./src/classes/styleSwitcher.js";
-import { OBJECT_TYPE } from "./src/enums/fileTypes.js";
 
+const ext = ['.js','.py','.java','.cpp','.c','.html','.css','.php','.rb','.swift','.ts','.cs','.go','.r','.pl','.sql','.sh','.lua','.jsx','.tsx','.vue','.sass','.scss','.less','.json','.yaml','.xml','.svg','.md','.yml'];
 
 document.addEventListener("DOMContentLoaded", function() {
   document.querySelector("button").addEventListener("click", addFile);
@@ -220,8 +220,6 @@ function uploadFile() {
       handleFileTypeDisplay(sortedExtensions, sortedExtensionPercentages);
       let mainExtension;
 
-      const ext = ['.js','.py','.java','.cpp','.c','.html','.css','.php','.rb','.swift','.ts','.cs','.go','.r','.pl','.sql','.sh','.lua','.jsx','.tsx','.vue','.sass','.scss','.less','.json','.yaml','.xml','.svg','.md','.yml'];
-
       for (const i in sortedExtensions) {
         if (ext.includes(sortedExtensions[i])) {
           mainExtension = sortedExtensions[i];
@@ -319,10 +317,14 @@ clearHistoryTable();
   })
   .then( res => res.json())
   .then( (data) => {
-
-    // data contains a json list of files that were uploaded, operations on the list can be done here
+    console.log(data);
+    data.map( (item) => {
+      const ft = ext[item.mainfiletype-1];
+      const dt = item.datecreated.split('T')[0];
+      item.mainfiletype = ft;
+      item.datecreated = dt;
+    });
     data.forEach(addHistoryRow);
-
   })
   .catch( err => console.log(err));
 }
