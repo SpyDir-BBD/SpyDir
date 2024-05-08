@@ -182,7 +182,6 @@ th {
   border-bottom: 0.2rem solid #616161;
   position: sticky;
   top: 0;
-  background-color: #FFFFFF; 
 }
 
 tr:not(:first-child) {
