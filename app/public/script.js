@@ -4,11 +4,11 @@ import { AuthManager } from "./src/utils/GithubAuth.js";
 import { LANGUAGE_EXTENSIONS } from "./src/enums/languageExtensions.js";
 import { Themes } from "./src/enums/styles.js";
 import { setTheme } from "./src/classes/styleSwitcher.js";
-import { OBJECT_TYPE } from "../enums/fileTypes.js";
+import { OBJECT_TYPE } from "./src/enums/fileTypes.js";
 
 
 document.addEventListener("DOMContentLoaded", function() {
-  document.querySelector("button").addEventListener("click", uploadFile);
+  document.querySelector("button").addEventListener("click", addFile);
 });
 
 const graphColors = [
@@ -71,7 +71,7 @@ if (urlParams.has('code')) {
   const _ = new AuthManager(urlParams.get('code'));
 }
 document.getElementById("homeLink").addEventListener("click",handleHome);
-document.getElementById("fileInput").addEventListener("change",uploadFile);
+document.getElementById("fileInput").addEventListener("change",addFile);
 
 
 var loginButton = document.getElementById('loginButton'); 
@@ -329,7 +329,7 @@ function showContainer(item){
   item.classList.remove("hidden");
 }
 
-function handleFileTypeDisplay(sortedExtensions,sortedExtensionPercentages){
+function handleFileTypeDisplay(sortedExtensions, sortedExtensionPercentages){
   for (let i = 0; i < sortedExtensions.length; i++) {
 
     const outerBarItemNode = document.createElement("li");
@@ -377,8 +377,7 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
-function createFolder(folderName,items,parent)
-{
+function createFolder(folderName,items,parent) {
   console.log("folder name: " + folderName);
   console.log("items: " + items);
   console.log("parent: " + parent);
@@ -429,7 +428,7 @@ function createFolder(folderName,items,parent)
 
       fileListHolder.appendChild(innerFile);
     }
-    else{
+    else {
       let fileElem = document.createElement("li");
       fileListHolder.appendChild(fileElem);
       createFolder(element.name,element.children,fileElem);
