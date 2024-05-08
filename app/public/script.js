@@ -94,6 +94,10 @@ const dropArea = document.getElementById("drop-area");
   const fileNameHolder = document.getElementById("fileNameText");
   const fileHolder = document.getElementById("displayFile");
 
+  let userPreferredTheme = 0;
+  //SET THIS FROM THE DATABASE!!!
+
+
   hideAll();
   showContainer(uploadContainer);
   showContainer(webDescContainer);
@@ -393,28 +397,27 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
+changeTheme(userPreferredTheme);
+//TODO: SET THIS FROM DATABASE!!!
+
 function createFolder(folderName,items,parent) {
   console.log("folder name: " + folderName);
   console.log("items: " + items);
   console.log("parent: " + parent);
-  //create folder node (section) <section  class="folderHolder"> (everything is added within this)
   const folderHolder = document.createElement("section");
   folderHolder.classList.add("folderHolder");
   console.log("Here!");
 
-  //create section node for inner folder holder <section onclick="expandOrCollapseFiles(event)" class="innerFolderHolder">
   const innerFolderHolder = document.createElement("section");
   innerFolderHolder.classList.add("innerFolderHolder");
   innerFolderHolder.setAttribute("onclick","expandOrCollapseFiles(event)");
 
 
-  //create header for folders <h3 class="folderListText">folder1</h3>
   const folderListText = document.createElement("h3");
   folderListText.classList.add("folderListText");
   const folderListTextValue = document.createTextNode(folderName);
   folderListText.appendChild(folderListTextValue);
 
-  //create holder for header icon <span class="material-symbols-outlined expandClass">expand_more</span> 
 
   const expandButtonIcon = document.createElement("span");
   expandButtonIcon.classList.add("material-symbols-outlined");
@@ -425,26 +428,22 @@ function createFolder(folderName,items,parent) {
   innerFolderHolder.appendChild(folderListText);
   innerFolderHolder.appendChild(expandButtonIcon);
 
-  //create list for files (ul) <ul class="fileList">
   const fileListHolder = document.createElement("ul");
   fileListHolder.classList.add("fileList");
 
   for (let i = 0; i < items.length; i++) {
     const element = items[i];
     console.log(element);
-    if(element.type == "FILE")
-    {
-        //if item is a file - 
-        //create file node (li) <li class="innerFile">file1.txt</li>
+    if(element.type == "FILE"){
       let innerFile = document.createElement("li");
       innerFile.classList.add("innerFile");
-  //create text node for file
+
       let innerFileText = document.createTextNode(element.name);
       innerFile.appendChild(innerFileText);
 
       fileListHolder.appendChild(innerFile);
     }
-    else {
+    else{
       let fileElem = document.createElement("li");
       fileListHolder.appendChild(fileElem);
       createFolder(element.name,element.children,fileElem);
@@ -455,29 +454,26 @@ function createFolder(folderName,items,parent) {
   parent.appendChild(folderHolder);
 }
 
-
-
 function setColorScheme(){
   const radioButtons = document.querySelectorAll('input[name="theme"]');
-
   let selectedIndex;
-            for (const radioButton of radioButtons) {
-                if (radioButton.checked) {
-                    selectedIndex = radioButton.id;
-                    break;
-                }
+      for (const radioButton of radioButtons) {
+          if (radioButton.checked) {
+              selectedIndex = radioButton.id;
+              break;
             }
-            changeTheme(selectedIndex);
-
+          }
+          changeTheme(selectedIndex);
+          //set user preferredtheme in database
 }
+
 function clearHistoryTable(){
   var tableHeaderRowCount = 1;
-var table = document.getElementById("historyTable");
-var rowCount = table.rows.length;
-for (var i = tableHeaderRowCount; i < rowCount; i++) {
+  var table = document.getElementById("historyTable");
+  var rowCount = table.rows.length;
+  for (var i = tableHeaderRowCount; i < rowCount; i++) {
     table.deleteRow(tableHeaderRowCount);
-}
-
+  }
 }
 
 
