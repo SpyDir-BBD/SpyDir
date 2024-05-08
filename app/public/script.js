@@ -273,6 +273,12 @@ function uploadFile() {
     reader.readAsArrayBuffer(file);
     showContainer(pieChartContainer);
     showContainer(fileListContainer);
+
+    const cardTitles = fileListContainer.getElementsByClassName('cardTitle');
+
+    const cardTitle = cardTitles[0];
+
+    cardTitle.textContent = `${filename}.zip`;
   }
 
 function openNav() {
