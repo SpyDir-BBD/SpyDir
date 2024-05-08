@@ -468,12 +468,15 @@ function setColorScheme(){
             changeTheme(selectedIndex);
 
 }
-
+function clearHistoryTable(){
   var tableHeaderRowCount = 1;
 var table = document.getElementById("historyTable");
 var rowCount = table.rows.length;
 for (var i = tableHeaderRowCount; i < rowCount; i++) {
     table.deleteRow(tableHeaderRowCount);
 }
+
 }
+
+
 
