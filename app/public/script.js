@@ -154,9 +154,17 @@ function addFile(){
   uploadFileSpecific(fileInputField.files);
 }
 
+function uploadFile() {
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0]; // Get the first file from the input
+
+    processFile(file);
+    
+   
+  };
 
   function uploadFileSpecific(object) {
-    const file = object[0];
+    const file = object[0]; // Get the first file from the input
 
     processFile(file);
   };
