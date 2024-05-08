@@ -155,9 +155,17 @@ function addFile(){
   uploadFileSpecific(fileInputField.files);
 }
 
+function uploadFile() {
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0]; // Get the first file from the input
+
+    processFile(file);
+    
+   
+  };
 
   function uploadFileSpecific(object) {
-    const file = object[0];
+    const file = object[0]; // Get the first file from the input
 
     processFile(file);
   };
@@ -184,6 +192,7 @@ function addFile(){
       const list = printCentralDirectory(byteData, centralDirectoryOffset);
       const root = constructFileSystem(list);
       console.log(root);
+      fileHolder.replaceChildren();
       createFolder(root.name,root.children,fileHolder);
       showContainer(fileListContainer);
 
@@ -403,7 +412,7 @@ function createFolder(folderName,items,parent) {
   const expandButtonIcon = document.createElement("span");
   expandButtonIcon.classList.add("material-symbols-outlined");
   expandButtonIcon.classList.add("expandClass");
-  const expandIconText = document.createTextNode("expand_less");
+  const expandIconText = document.createTextNode("expand_more");
   expandButtonIcon.appendChild(expandIconText);
 
   innerFolderHolder.appendChild(folderListText);
