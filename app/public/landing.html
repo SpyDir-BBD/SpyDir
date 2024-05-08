@@ -183,6 +183,23 @@
       <li class="listFlex" id="historyLink"><span class="material-symbols-outlined">history</span><h3 class="listIcon">History</h3></li>
       <li class="listFlex"><span class="material-symbols-outlined">logout</span><h3 class="listIcon">Logout</h3></li>
     </ul>
+    <form onchange="setColorScheme()">
+        <h5>Preferred colour scheme</h5>
+        <ul class="colorSchemeList">
+            <li>
+                <input type="radio" value="Normal" name="theme" id="0" />
+                <label class="styleSelect" for="Normal">Normal</label>
+            </li>
+            <li>
+                <input type="radio" value="Dark Mode" name="theme" id="1" />
+                <label class="styleSelect" for="Dark Mode">Dark Mode</label>
+            </li>
+            <li>
+                <input type="radio" value="High Contrast" name="theme" id="2" />
+                <label class="styleSelect" for="High Contrast">High Contrast</label>
+            </li>
+          </ul>
+    </form>
    </nav>
 </body>
 </html>

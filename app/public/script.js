@@ -36,6 +36,7 @@ const graphColors = [
 
 window.expandOrCollapseFiles = expandOrCollapseFiles;
 window.handleDrop = handleDrop;
+window.setColorScheme = setColorScheme;
 
 document.getElementById("burgerButton").addEventListener("click",openNav);
 document.getElementById("burgerButton").classList.add("hidden");
@@ -379,6 +380,9 @@ function switchTheme() {
     currentIndex = (currentIndex + 1) % themesArray.length; // Move to the next index, wrapping around
 }
 
+function changeTheme(index) {
+  setTheme(Themes[themesArray[index]]);
+}
 // Event listener for space bar
 document.addEventListener('keydown', function(event) {
     if (event.code === 'Space') {
@@ -455,3 +459,18 @@ function clearHistoryTable(){
   table.replaceChildren();
 
 }
+
+function setColorScheme(){
+  const radioButtons = document.querySelectorAll('input[name="theme"]');
+
+  let selectedIndex;
+            for (const radioButton of radioButtons) {
+                if (radioButton.checked) {
+                    selectedIndex = radioButton.id;
+                    break;
+                }
+            }
+            changeTheme(selectedIndex);
+
+}
+
