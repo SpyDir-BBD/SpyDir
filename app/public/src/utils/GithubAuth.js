@@ -71,10 +71,7 @@ export class AuthManager {
             this.username = userInfo.login;
             this.imageURL = userInfo.avatar_url;
             this.loggedIn = true;
-            var name = document.getElementById('userName');
-            var navName = document.getElementById('navUserName');
-            name.innerText = this.username;
-            navName.innerText = this.username;
+
 
             /*****************************************************************/
             
@@ -96,6 +93,12 @@ export class AuthManager {
                 this.theme_id = data["user_details"]["themepreference"];
                 document.getElementById("loginButton").classList.add("hidden");
                 document.getElementById("loginDesc").classList.add("hidden");
+                document.getElementById("burgerButton").classList.remove("hidden");
+                document.getElementById("burgerButton").classList.add("material-symbols-outlined");
+                var name = document.getElementById('userName');
+                var navName = document.getElementById('navUserName');
+                name.innerText = this.username;
+                navName.innerText = this.username;
             })
             .catch( err => console.log(err));
 

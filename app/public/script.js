@@ -40,7 +40,6 @@ window.handleDrop = handleDrop;
 window.setColorScheme = setColorScheme;
 
 document.getElementById("burgerButton").addEventListener("click",openNav);
-document.getElementById("burgerButton").classList.add("hidden");
 
 document.getElementById("closeBurger") .addEventListener("click",closeNav);
 document.getElementById("uploadIcon")  .addEventListener("click",addFile);
