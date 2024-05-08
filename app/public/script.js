@@ -82,6 +82,7 @@ const dropArea = document.getElementById("drop-area");
   dropArea.addEventListener("dragleave", handleDrop, false);
   dropArea.addEventListener("dragover", handleDrop, false);
   dropArea.addEventListener("drop", handleDrop, false);
+  
 
 
   const historyContainer = document.getElementById("historyContainer");
@@ -146,14 +147,11 @@ const dropArea = document.getElementById("drop-area");
     }
   }
   
-  
-
 function addFile(){
   var fileInputField = document.getElementById("fileInput");
   fileInputField.click();
   uploadFileSpecific(fileInputField.files);
 }
-
 
   function uploadFileSpecific(object) {
     const file = object[0];
