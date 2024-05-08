@@ -4,6 +4,7 @@ import { AuthManager } from "./src/utils/GithubAuth.js";
 import { LANGUAGE_EXTENSIONS } from "./src/enums/languageExtensions.js";
 import { Themes } from "./src/enums/styles.js";
 import { setTheme } from "./src/classes/styleSwitcher.js";
+import { OBJECT_TYPE } from "../enums/fileTypes.js";
 
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -190,13 +191,10 @@ function uploadFile() {
 
       /******************************************************************/
       // calculate file extensions
-      const { extensionCounts, zipFileStructure } = root.countDistinctExtensions();
+      const extensionCounts = root.countDistinctExtensions();
 
       // Calculate total file count
       const totalFiles = Object.values(extensionCounts).reduce((acc, count) => acc + count, 0);
-
-      console.log("extensionCounts: " + JSON.stringify(extensionCounts));
-      console.log("zipFileStructure: " + JSON.stringify(zipFileStructure));
 
       const extensionPercentages = {};
       var extensionPercentagesValues =[];
@@ -212,7 +210,7 @@ function uploadFile() {
       const sortedExtensionPercentages = extensionPercentagesValues.sort(function(a, b){return b - a;});
       
       document.getElementById("fileTypeList").replaceChildren();
-      handleFileTypeDisplay(sortedExtensions,sortedExtensionPercentages);
+      handleFileTypeDisplay(sortedExtensions, sortedExtensionPercentages);
       let mainExtension;
 
       const ext = ['.js','.py','.java','.cpp','.c','.html','.css','.php','.rb','.swift','.ts','.cs','.go','.r','.pl','.sql','.sh','.lua','.jsx','.tsx','.vue','.sass','.scss','.less','.json','.yaml','.xml','.svg','.md','.yml'];
