@@ -89,6 +89,7 @@ const dropArea = document.getElementById("drop-area");
   const fileListContainer = document.getElementById("fileListContainer");
   const webDescContainer = document.getElementById("webDescContainer");
   const fileNameHolder = document.getElementById("fileNameText");
+  const fileHolder = document.getElementById("displayFile");
 
   hideAll();
   showContainer(uploadContainer);
@@ -187,6 +188,8 @@ function uploadFile() {
       const list = printCentralDirectory(byteData, centralDirectoryOffset);
       const root = constructFileSystem(list);
       console.log(root);
+      createFolder(root.name,root.children,fileHolder);
+      showContainer(fileListContainer);
 
       /******************************************************************/
       // calculate file extensions
@@ -377,3 +380,66 @@ document.addEventListener('keydown', function(event) {
         switchTheme();
     }
 });
+
+function createFolder(folderName,items,parent)
+{
+  console.log("folder name: " + folderName);
+  console.log("items: " + items);
+  console.log("parent: " + parent);
+  //create folder node (section) <section  class="folderHolder"> (everything is added within this)
+  const folderHolder = document.createElement("section");
+  folderHolder.classList.add("folderHolder");
+  console.log("Here!");
+
+  //create section node for inner folder holder <section onclick="expandOrCollapseFiles(event)" class="innerFolderHolder">
+  const innerFolderHolder = document.createElement("section");
+  innerFolderHolder.classList.add("innerFolderHolder");
+  innerFolderHolder.setAttribute("onclick","expandOrCollapseFiles(event)");
+
+
+  //create header for folders <h3 class="folderListText">folder1</h3>
+  const folderListText = document.createElement("h3");
+  folderListText.classList.add("folderListText");
+  const folderListTextValue = document.createTextNode(folderName);
+  folderListText.appendChild(folderListTextValue);
+
+  //create holder for header icon <span class="material-symbols-outlined expandClass">expand_more</span> 
+
+  const expandButtonIcon = document.createElement("span");
+  expandButtonIcon.classList.add("material-symbols-outlined");
+  expandButtonIcon.classList.add("expandClass");
+  const expandIconText = document.createTextNode("expand_less");
+  expandButtonIcon.appendChild(expandIconText);
+
+  innerFolderHolder.appendChild(folderListText);
+  innerFolderHolder.appendChild(expandButtonIcon);
+
+  //create list for files (ul) <ul class="fileList">
+  const fileListHolder = document.createElement("ul");
+  fileListHolder.classList.add("fileList");
+
+  for (let i = 0; i < items.length; i++) {
+    const element = items[i];
+    console.log(element);
+    if(element.type == "FILE")
+    {
+        //if item is a file - 
+        //create file node (li) <li class="innerFile">file1.txt</li>
+      let innerFile = document.createElement("li");
+      innerFile.classList.add("innerFile");
+  //create text node for file
+      let innerFileText = document.createTextNode(element.name);
+      innerFile.appendChild(innerFileText);
+
+      fileListHolder.appendChild(innerFile);
+    }
+    else{
+      let fileElem = document.createElement("li");
+      fileListHolder.appendChild(fileElem);
+      createFolder(element.name,element.children,fileElem);
+    }
+  }
+  folderHolder.appendChild(innerFolderHolder);
+  folderHolder.appendChild(fileListHolder);
+  parent.appendChild(folderHolder);
+}
