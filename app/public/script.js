@@ -93,10 +93,6 @@ const dropArea = document.getElementById("drop-area");
   const fileNameHolder = document.getElementById("fileNameText");
   const fileHolder = document.getElementById("displayFile");
 
-  let userPreferredTheme = 0;
-  //SET THIS FROM THE DATABASE!!!
-
-
   hideAll();
   showContainer(uploadContainer);
   showContainer(webDescContainer);
@@ -388,27 +384,16 @@ function handleFileTypeDisplay(sortedExtensions, sortedExtensionPercentages){
 }
 }
 
-let currentIndex = 0; // Current index of the theme array
-const themesArray = ['Light', 'Night', 'Contrast'];
 
-// Function to switch themes
-function switchTheme() {
-    setTheme(Themes[themesArray[currentIndex]]);
-    currentIndex = (currentIndex + 1) % themesArray.length; // Move to the next index, wrapping around
-}
 
-function changeTheme(index) {
-  setTheme(Themes[themesArray[index]]);
-}
+setTheme(0);
+
 // Event listener for space bar
 document.addEventListener('keydown', function(event) {
     if (event.code === 'Space') {
         switchTheme();
     }
 });
-
-changeTheme(userPreferredTheme);
-//TODO: SET THIS FROM DATABASE!!!
 
 function createFolder(folderName,items,parent) {
   //console.log("folder name: " + folderName);
@@ -473,7 +458,7 @@ function setColorScheme(){
               break;
             }
           }
-          changeTheme(selectedIndex);
+          setTheme(selectedIndex);
           //set user preferredtheme in database
 }
 

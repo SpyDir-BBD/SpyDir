@@ -1,3 +1,5 @@
+import { setTheme } from "../classes/styleSwitcher.js";
+
 export class AuthManager {
     constructor(authCode) {
         if (AuthManager.instance) {
@@ -91,6 +93,7 @@ export class AuthManager {
                 //console.log("============================");
                 this.user_id = data["user_details"]["id"];
                 this.theme_id = data["user_details"]["themepreference"];
+                setTheme(this.theme_id);
                 document.getElementById("loginButton").classList.add("hidden");
                 document.getElementById("loginDesc").classList.add("hidden");
                 document.getElementById("burgerButton").classList.remove("hidden");
