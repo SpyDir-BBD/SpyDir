@@ -8,7 +8,7 @@ import { setTheme } from "./src/classes/styleSwitcher.js";
 const ext = ['.js','.py','.java','.cpp','.c','.html','.css','.php','.rb','.swift','.ts','.cs','.go','.r','.pl','.sql','.sh','.lua','.jsx','.tsx','.vue','.sass','.scss','.less','.json','.yaml','.xml','.svg','.md','.yml'];
 
 document.addEventListener("DOMContentLoaded", function() {
-  document.querySelector("button").addEventListener("click", addFile);
+  document.querySelector("button").addEventListener("click", uploadFile);
 });
 
 const graphColors = [
@@ -72,7 +72,7 @@ if (urlParams.has('code')) {
   const _ = new AuthManager(urlParams.get('code'));
 }
 document.getElementById("homeLink").addEventListener("click",handleHome);
-document.getElementById("fileInput").addEventListener("change",addFile);
+document.getElementById("fileInput").addEventListener("change",uploadFile);
 
 
 var loginButton = document.getElementById('loginButton'); 
