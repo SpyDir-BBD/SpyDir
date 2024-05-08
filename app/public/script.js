@@ -451,7 +451,10 @@ function createFolder(folderName,items,parent) {
 
 
 function clearHistoryTable(){
-  const table = document.getElementById("historyTable");
-  table.replaceChildren();
-
+  var tableHeaderRowCount = 1;
+var table = document.getElementById("historyTable");
+var rowCount = table.rows.length;
+for (var i = tableHeaderRowCount; i < rowCount; i++) {
+    table.deleteRow(tableHeaderRowCount);
+}
 }

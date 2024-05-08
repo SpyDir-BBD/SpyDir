@@ -12,6 +12,7 @@
     --LinkAccent: 'none';
 
 
+    --defaultTextForGraph: black;
     --buttonText: white;
     --buttonColor: black;
     --veryLightBlue: rgba(248, 248, 255, 1);
@@ -341,6 +342,8 @@ cursor: pointer;
 }
 .innerBarItem li{
   margin-left:-2rem;
+  color:var(--defaultTextForGraph);
+
 }
 
 .outerBarItem{
