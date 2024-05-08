@@ -411,7 +411,7 @@ function createFolder(folderName,items,parent)
   const expandButtonIcon = document.createElement("span");
   expandButtonIcon.classList.add("material-symbols-outlined");
   expandButtonIcon.classList.add("expandClass");
-  const expandIconText = document.createTextNode("expand_less");
+  const expandIconText = document.createTextNode("expand_more");
   expandButtonIcon.appendChild(expandIconText);
 
   innerFolderHolder.appendChild(folderListText);
