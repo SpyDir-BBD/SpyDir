@@ -190,12 +190,13 @@ function uploadFile() {
 
       /******************************************************************/
       // calculate file extensions
-      const extensionCounts = root.countDistinctExtensions();
+      const { extensionCounts, zipFileStructure } = root.countDistinctExtensions();
 
       // Calculate total file count
       const totalFiles = Object.values(extensionCounts).reduce((acc, count) => acc + count, 0);
 
       console.log("extensionCounts: " + JSON.stringify(extensionCounts));
+      console.log("zipFileStructure: " + JSON.stringify(zipFileStructure));
 
       const extensionPercentages = {};
       var extensionPercentagesValues =[];
