@@ -11,6 +11,9 @@
     --LinkColor: '#5145ba';
     --LinkAccent: 'none';
 
+
+    --buttonText: white;
+    --buttonColor: black;
     --veryLightBlue: rgba(248, 248, 255, 1);
     --darkerBlue: #BFC5EA;
 }
@@ -58,16 +61,14 @@ body{
 }
 
 .headerItem{
-    /* background-color: pink; */
-    margin: 0.1rem;
     display: flex;
     flex-direction: row;
     align-items: center;
+    
 }
 
 .upload-boxFlex{
     width: 60%;
-    height: 30rem;
     background-color: var(--CardColor);
     border-radius: 0.1rem;
     margin: auto;
@@ -95,26 +96,20 @@ body{
 padding: 1rem;
 }
 
-.fileList ul{
-  /* transition: max-height 1s ease;  */
-}
-
 .fileList{
   display:block;
   list-style-type: none;
   max-height:0;
-  min-height: 0;
   width: 100%; 
   overflow-x: hidden; 
   overflow-y:hidden;
-  transition: max-height 1.1s;
+  transition: max-height 500ms linear;
 
 
 }
 
 .shadowCard{
   width: 60%;
-  height: 30rem;
   background-color: var(--CardColor);
   border: 1px solid var(--CardBorder);
   border-radius: 0.1rem;
@@ -220,7 +215,7 @@ cursor: pointer;
 }
 #mainTitle{
     font-size: 1.3rem;
-    padding: 0.2rem;
+    margin-left: -1rem;
 }
 
 #userName{
@@ -274,7 +269,7 @@ cursor: pointer;
   text-decoration: underline;
   padding: 0.2rem;
   transition: 0.5s;
-  color: rgba(72, 62, 168, 1);
+  color: var(--LinkColor);
 }
 
 .webDescText{
@@ -357,8 +352,8 @@ cursor: pointer;
 }
 
 #loginButton{
-  background-color: var(--LinkColor);
-  color: white;
+  background-color: var(--buttonColor);
+  color: var(--buttonText);
   border-radius: 0.3rem;
   border: 1px solid var(--LinkAccent);
   padding: 0.5rem;
@@ -369,6 +364,11 @@ cursor: pointer;
   letter-spacing: 0.05rem;
   transition: 0.4s;
 
+}
+
+.logo{
+  width:6rem;
+  height: auto;
 }
 
 #loginButton:hover{
