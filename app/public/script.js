@@ -318,6 +318,7 @@ clearHistoryTable();
   })
   .then( res => res.json())
   .then( (data) => {
+
     // data contains a json list of files that were uploaded, operations on the list can be done here
     data.forEach(addHistoryRow);
 
@@ -446,4 +447,11 @@ function createFolder(folderName,items,parent)
   folderHolder.appendChild(innerFolderHolder);
   folderHolder.appendChild(fileListHolder);
   parent.appendChild(folderHolder);
+}
+
+
+function clearHistoryTable(){
+  const table = document.getElementById("historyTable");
+  table.replaceChildren();
+
 }
