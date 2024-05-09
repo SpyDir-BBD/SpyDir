@@ -347,6 +347,13 @@ async function handleHistory() {
     })
     .then( res => res.json())
     .then( (data) => {
+
+      const tableLoader = document.querySelector('.tableLoader');
+      const uploadHistoryTable = document.querySelector('.uploadHistoryTable');
+
+      tableLoader.classList.toggle('hidden');
+      uploadHistoryTable.classList.toggle('hidden');
+
       dataCopy = data;
       data.map( (item) => {
         const ft = ext[item.mainfiletype-1];
