@@ -306,6 +306,17 @@ function handleHome(){
   showContainer(webDescContainer);
 }
 
+/*function handleNoHistoryMessage() {
+  const table = document.getElementById("historyTable");
+  const message = document.createElement("p");
+  message.textContent = " You don't got no history bro, Chill!";
+
+  message.style.color = "red";
+  message.style.fontWeight = "bold";
+
+  table.appendChild(message);
+}*/
+
 function addHistoryRow(item) {
   const table = document.getElementById("historyTable");
 
@@ -334,6 +345,8 @@ async function handleHistory() {
     })
     .then( res => res.json())
     .then( (data) => {
+      //console.log(data);
+      //if (data.length>0) {
       data.map( (item) => {
         const ft = ext[item.mainfiletype-1];
         const dt = item.datecreated.split('T')[0];
@@ -341,13 +354,18 @@ async function handleHistory() {
         item.datecreated = dt;
         addHistoryRow(item);
       });
+      //}
+      //else {
+      //  handleNoHistoryMessage();
+      //}
     })
     .catch( err => console.log(err));
   }
-  else {
+  //else {
     // tell user to login before requesting history
-    console.log("Tell the user to login before fetching history");
-  }
+    //console.log("Tell the user to login before fetching history");
+    //handleNoHistoryMessage();
+  //}
 }
 
 function hideAll(){
