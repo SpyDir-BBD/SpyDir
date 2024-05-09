@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SpyDir</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="loader.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <link rel="icon" type="image/x-icon" href="media/SpyDir.svg">
@@ -67,7 +68,23 @@
     <section id="historyContainer" class="outerFlex-2 ">
       <section class="shadowCard upload-boxFlex">
           <h3 class="cardTitle">File Upload History</h3>
-          <section class="uploadHistoryTable">
+          <section class="tableLoader">
+            <section class="container">
+                <article class="dot dot-1"></article>
+                <article class="dot dot-2"></article>
+                <article class="dot dot-3"></article>
+            </section>
+            
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                <defs>
+                <filter id="goo">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 21 -7"/>
+                </filter>
+                </defs>
+            </svg>
+          </section>
+          <section class="uploadHistoryTable hidden">
               <table id="historyTable">
                   <tr>
                       <th>File Name</th>
@@ -206,5 +223,6 @@
           </ul>
     </form>
    </nav>
-</body>
+
+   
 </html>
