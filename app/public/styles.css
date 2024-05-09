@@ -362,6 +362,7 @@ cursor: pointer;
   list-style-type: none;
   display: flex;
   justify-content: space-between;
+  max-width: 100%;
 }
 .innerBarItem li{
   margin-left:-2rem;
@@ -369,12 +370,23 @@ cursor: pointer;
 
 }
 
+#fileTypeList{
+  container-type: inline-size;
+}
+
 .outerBarItem{
+
   background-color: pink;
   margin: 0.3rem;
   padding: 0.4rem;
   border-radius: 0.4rem;
   min-width: 7rem;
+}
+
+@container (max-width:400px){
+  .outerBarItem{
+    max-width: 10rem;
+  }
 }
 
 #loginButton{
