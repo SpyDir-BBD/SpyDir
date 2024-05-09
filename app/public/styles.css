@@ -420,6 +420,18 @@ cursor: pointer;
 
 }
 
+.supportedTypesList{
+  display: flex;
+  flex-direction:row;
+  flex-wrap: wrap;
+  column-gap: 8rem;
+}
+
+.supportedTypesList li{
+  flex: 1 1 35%;
+  white-space: nowrap;
+  }
+
 .logo{
   width:6rem;
   height: auto;

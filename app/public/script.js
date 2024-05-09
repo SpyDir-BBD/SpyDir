@@ -103,8 +103,10 @@ const dropArea = document.getElementById("drop-area");
   const noHistoryContainer = document.getElementById("noHistoryContainer");
 
   hideAll();
+  populateFileTypesList();
   showContainer(uploadContainer);
   showContainer(webDescContainer);
+
 
 
   ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
@@ -524,3 +526,16 @@ function handleKeyPress(event) {
 
 // Adding event listener to the document for key press
 document.addEventListener('keydown', handleKeyPress);
+
+  function populateFileTypesList(){
+    let supportedFileList = document.getElementById("supportedTypesList");
+      for (const type in LANGUAGE_EXTENSIONS) {
+        if(type ==".other"){
+          continue;
+        }
+        const node = document.createElement("li");
+        const textnode = document.createTextNode(type + ": " + LANGUAGE_EXTENSIONS[type]);
+        node.appendChild(textnode);
+        supportedFileList.appendChild(node);
+    };
+}
