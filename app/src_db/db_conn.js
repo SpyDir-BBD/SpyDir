@@ -34,6 +34,11 @@ class ConnectDB {
         return result.rows[0];
     }
 
+    async setUserTheme(user_id, theme_id) {
+        const result = await this.pool.query('UPDATE users SET themepreference = $1 WHERE id = $2', [theme_id, user_id]);
+        return result;
+    }
+
     async checkUserExists(username) {
         const result = await this.pool.query('SELECT COUNT(*) AS user_count FROM Users WHERE username = $1', [username]);
         if (result.rows[0]["user_count"]==1) {
