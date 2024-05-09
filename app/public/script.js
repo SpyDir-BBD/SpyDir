@@ -369,7 +369,7 @@ function hideAll(){
   uploadContainer.classList.add("hidden");
   fileListContainer.classList.add("hidden");
   webDescContainer.classList.add("hidden");
-  noHistoryContainer.classList.add("history");
+  noHistoryContainer.classList.add("hidden");
 }
 
 function showContainer(item){
