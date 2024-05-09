@@ -92,15 +92,19 @@ body{
 }
 
 
-
+.folderHolder {
+  display: flex;
+  flex-direction: column;
+}
 
 .innerFolderHolder{
   border-bottom:0.1rem solid rgb(150, 147, 147);
   display:flex;
+  flex: 1 0 0;
   justify-content: space-between;
   align-items: center;
   transition: 0.3s;
-  width:90%;
+  /* width:90%; */
 }
 
 .innerFolderHolder:hover{
@@ -118,7 +122,7 @@ height: fit-content;
   display:block;
   list-style-type: none;
   max-height:0;
-  width: 100%; 
+  /* width: 100%;  */
   overflow-x: hidden; 
   overflow-y:hidden;
   transition: max-height 500ms linear;
@@ -128,7 +132,7 @@ height: fit-content;
 
 .fileList li{
   color:var(--folderChildFiles);
-  padding: 0.5rem;
+  /* padding: 0.5rem; */
 }
 
 .shadowCard{
