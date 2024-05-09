@@ -420,6 +420,13 @@ cursor: pointer;
 .logo{
   width:6rem;
   height: auto;
+  transition: 0.4s;
+}
+
+.logo:hover{
+  transform:scale(1.1);
+  transition: 0.4s;
+  cursor: pointer;
 }
 
 #loginButton:hover{

@@ -39,6 +39,7 @@ window.expandOrCollapseFiles = expandOrCollapseFiles;
 window.handleDrop = handleDrop;
 window.setColorScheme = setColorScheme;
 window.removeFile = removeFile;
+window.goHome = goHome;
 
 document.getElementById("burgerButton").addEventListener("click",openNav);
 
@@ -73,6 +74,12 @@ if (urlParams.has('code')) {
 }
 document.getElementById("homeLink").addEventListener("click",handleHome);
 document.getElementById("fileInput").addEventListener("change",uploadFile);
+
+function goHome(){
+  hideAll();
+  showContainer(uploadContainer);
+  showContainer(webDescContainer);
+}
 
 
 var loginButton = document.getElementById('loginButton'); 
