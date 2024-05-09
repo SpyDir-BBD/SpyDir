@@ -18,7 +18,6 @@ export const findZipHeader = (byteData) => {
 
 export const findCentralDirectoryOffset = (byteData, eocdIndex) => {
     if (eocdIndex < 22 || eocdIndex >= byteData.length) {
-        console.error("Invalid EOCD index.");
         return -1;
     }
 
@@ -66,31 +65,3 @@ export const printCentralDirectory = (byteData, centralDirectoryOffset) => {
     }
     return fileList;
 };
-
-
-
-
-
-// const filePath = 'src/utils/temp.zip';
-// const byteData = getZipByteData(filePath);
-// const eocdIndex = findZipHeader(byteData);
-// const centralDirectoryOffset = findCentralDirectoryOffset(byteData, eocdIndex);
-// const list = printCentralDirectory(byteData, centralDirectoryOffset);
-
-// console.log(list);
-
-// const root = constructFileSystem(list);
-
-// console.log(root);
-
-// console.log(root.children);
-
-// for (const child of root.children)
-// {
-//     console.log(child);
-//     for (const sndchild of child.children)
-//     {
-//         console.log(sndchild);
-//         console.log(sndchild.countDistinctExtensions());
-//     }
-// }

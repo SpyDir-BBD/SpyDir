@@ -24,7 +24,6 @@ export class AuthManager {
             })
             .then(response => response.text())
             .then(data => {
-                //console.log('Data:', data);
                 if (data) {
                     this.access_token = data;
                     // start hitting api endpoints using access_token
@@ -54,7 +53,6 @@ export class AuthManager {
     }
 
     async setUserInfo() {
-        console.log("Setting user info");
         const url = 'https://api.github.com/user';
         const headers = {
             'Authorization': `Bearer ${this.access_token}`,
@@ -72,7 +70,6 @@ export class AuthManager {
             });
 
             if (!response.ok) {
-                console.log("USER INFO RESPONSE:", await response.json());
                 throw new Error(`Failed to fetch user information:`);
             }
 
@@ -96,8 +93,6 @@ export class AuthManager {
             })
             .then( res => res.json())
             .then( (data) => {
-                //console.log(data);
-                //console.log("============================");
                 this.user_id = data["user_details"]["id"];
                 this.theme_id = data["user_details"]["themepreference"];
                 setTheme(this.theme_id);
@@ -112,16 +107,10 @@ export class AuthManager {
             })
             .catch( err => console.log(err));
 
-            console.log("===========================");
-
             const info = await request.json();
-            console.log("info", info);
             if (!request.ok) {
-                console.log("USER INFO RESPONSE:", await request.json());
                 throw new Error(`Failed to fetch user information:`);
             }
-
-            console.log("===========================");
         } 
         catch (error) {
             console.error('Error fetching user information:', error.message);
