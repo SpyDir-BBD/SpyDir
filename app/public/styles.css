@@ -77,12 +77,11 @@ body{
 .upload-boxFlex{
     width: 60%;
     background-color: var(--CardColor);
-    border-radius: 0.1rem;
+    border-radius: 1rem;
     margin: auto;
     box-shadow: 0 0.1rem 0.5rem rgb(0 0 0 / 0.2);
-    padding: 0.5rem;
+    padding: 1rem;
     border: 1px solid var(--CardBorder);
-    border-radius: 0.1rem;
 }
 
 @container(max-width:900px){
@@ -139,7 +138,7 @@ height: fit-content;
   /* width: 60%; */
   background-color: var(--CardColor);
   border: 1px solid var(--CardBorder);
-  border-radius: 0.1rem;
+  border-radius: 1rem;
   margin: auto;
   box-shadow: 0 0.1rem 0.5rem rgb(0 0 0 / 0.2);
 }
@@ -156,7 +155,7 @@ height: fit-content;
 
 .innerUpload-boxFlex{
     background-color: var(--DropAreaColor);
-    border-radius: 0.1rem;
+    border-radius: 0.5rem;
     border-style: dashed;
     border-width: 0.1rem;
     border-color: var(--DropAreaBorder);
@@ -169,7 +168,7 @@ height: fit-content;
 
 .showFile{
   background-color: var(--DropAreaColor);
-  border-radius: 0.1rem;
+  border-radius: 0.5rem;
   border-style: dashed;
   border-width: 0.1rem;
   border-color: var(--DropAreaBorder);
@@ -177,9 +176,9 @@ height: fit-content;
   margin-top:0.5rem;
   text-align: center;
   align-content: center;
-  width: 50%;  
+  width: 46%;  
   display:flex;
-  padding-left: 0.6rem;
+  padding: 0 2%;
   justify-content: space-between;
   align-items: center;
 }
