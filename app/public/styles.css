@@ -47,6 +47,7 @@ body{
 }
 
 .outerFlex-2{
+  container-type: inline-size;
     display: flex;
      /* background-color: green;  */
     margin: 0.5rem;
@@ -76,6 +77,14 @@ body{
     box-shadow: 0 0.1rem 0.5rem rgb(0 0 0 / 0.2);
     padding: 0.5rem;
 }
+
+@container(max-width:900px){
+  .upload-boxFlex{
+    width: 100%;
+  }
+}
+
+
 
 
 .innerFolderHolder{
@@ -110,7 +119,7 @@ padding: 1rem;
 }
 
 .shadowCard{
-  width: 60%;
+  /* width: 60%; */
   background-color: var(--CardColor);
   border: 1px solid var(--CardBorder);
   border-radius: 0.1rem;
