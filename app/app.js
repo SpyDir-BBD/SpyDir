@@ -7,7 +7,7 @@ var cors = require('cors');
 let globalAccessToken = ''; // global access token
 const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
-const redirectUri = 'http://localhost:5000';
+const redirectUri = 'http://ec2-3-252-231-159.eu-west-1.compute.amazonaws.com:8080/';
 
 app.use(express.json());
 app.use(express.text());
