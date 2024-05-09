@@ -138,7 +138,7 @@ const dropArea = document.getElementById("drop-area");
     const listHolder = parent.getElementsByTagName("ul")[0];
     if(spanHolder.innerText == "expand_more"){
       spanHolder.innerText = "expand_less";
-      listHolder.style.maxHeight = "30rem";
+      listHolder.style.maxHeight = "100rem";
     }
     else{
       spanHolder.innerText = "expand_more";

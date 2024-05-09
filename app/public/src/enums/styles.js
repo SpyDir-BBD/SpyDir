@@ -13,6 +13,7 @@ export const Themes = {
         DropAreaBorder: '#5145ba4d',
         LinkColor: '#5145ba',
         LinkAccent: 'none',
+        folderChildFiles: '#5c5c94'
         },
     Night: {
         MainBackground: '#161616',
@@ -24,6 +25,7 @@ export const Themes = {
         DropAreaBorder: '#5145ba4d',
         LinkColor: '#5145ba',
         LinkAccent: 'none',
+        folderChildFiles:'#e0e2ea'
         },
     Contrast: {
         MainBackground: '#161616',
@@ -35,6 +37,7 @@ export const Themes = {
         DropAreaBorder: '#ffff00',
         LinkColor: '#101010',
         LinkAccent: '#ffff00',
+        folderChildFiles:'#d5E69A'
         },
     Random: () => ({
         MainBackground: getRandomColor(),
