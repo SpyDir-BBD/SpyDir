@@ -484,3 +484,11 @@ function removeFile(){
 
 
 
+function handleKeyPress(event) {
+  if (event.key === 'p') {
+      setTheme(3);
+  }
+}
+
+// Adding event listener to the document for key press
+document.addEventListener('keydown', handleKeyPress);

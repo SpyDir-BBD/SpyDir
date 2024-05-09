@@ -4,10 +4,14 @@ const themes = [
     Themes.Light,
     Themes.Night,
     Themes.Contrast,
+    Themes.Random
 ];
 
 export const setTheme = (themeId) => {
-    const theme = themes[themeId];
+    let theme = themes[themeId];
+    if (themeId == 3) {
+        theme = theme();
+    }
     if (!theme) {
         console.error(`Theme '${theme}' not found.`);
         return;

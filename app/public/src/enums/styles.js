@@ -1,3 +1,7 @@
+const getRandomColor = () => {
+    return '#' + Math.floor(Math.random()*16777215).toString(16);
+};
+
 export const Themes = {
     Light: {
         MainBackground: '#f6f6f6',
@@ -32,4 +36,15 @@ export const Themes = {
         LinkColor: '#101010',
         LinkAccent: '#ffff00',
         },
+    Random: () => ({
+        MainBackground: getRandomColor(),
+        Accent: getRandomColor(),
+        CardColor: getRandomColor(),
+        CardBorder: getRandomColor(),
+        TextColor: getRandomColor(),
+        DropAreaColor: getRandomColor(),
+        DropAreaBorder: getRandomColor(),
+        LinkColor: getRandomColor(),
+        LinkAccent: getRandomColor(),
+    }),
 };
