@@ -118,7 +118,6 @@ const dropArea = document.getElementById("drop-area");
   
   function highlight(e) {
     dropArea.classList.add("highlight");
-    console.log("hello???/");
   }
   
   function unhighlight(e) {
@@ -126,7 +125,6 @@ const dropArea = document.getElementById("drop-area");
   }
 
   function handleDrop(item) {
-    console.log("????");
     const fileDataTransfer = item.dataTransfer;
     const files = fileDataTransfer.files;
   
@@ -192,7 +190,6 @@ function uploadFile() {
       const centralDirectoryOffset = findCentralDirectoryOffset(byteData, eocdIndex);
       const list = printCentralDirectory(byteData, centralDirectoryOffset);
       const root = constructFileSystem(list);
-      console.log(root);
       fileHolder.replaceChildren();
       createFolder(root.name,root.children,fileHolder);
       showContainer(fileListContainer);
@@ -239,10 +236,10 @@ function uploadFile() {
       //  mainExtension = "undefined";
       //}
 
-      console.log("Filename:", filename);
-      console.log("Total Files:", totalFiles);
-      console.log("Main File Extension Type:", mainExtension);
-      console.log("Extension Percentages:", extensionPercentages);
+      // console.log("Filename:", filename);
+      // console.log("Total Files:", totalFiles);
+      // console.log("Main File Extension Type:", mainExtension);
+      // console.log("Extension Percentages:", extensionPercentages);
       document.getElementById("fileBlockHolder").classList.remove("hidden");
 
       fileNameHolder.replaceChildren();
@@ -330,7 +327,6 @@ async function handleHistory() {
     })
     .then( res => res.json())
     .then( (data) => {
-      //console.log(data);
       data.map( (item) => {
         const ft = ext[item.mainfiletype-1];
         const dt = item.datecreated.split('T')[0];
