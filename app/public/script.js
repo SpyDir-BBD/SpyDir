@@ -100,6 +100,7 @@ const dropArea = document.getElementById("drop-area");
   const webDescContainer = document.getElementById("webDescContainer");
   const fileNameHolder = document.getElementById("fileNameText");
   const fileHolder = document.getElementById("displayFile");
+  const noHistoryContainer = document.getElementById("noHistoryContainer");
 
   hideAll();
   showContainer(uploadContainer);
@@ -332,6 +333,7 @@ function addHistoryRow(item) {
 }
 
 async function handleHistory() {
+  var dataCopy;
   hideAll();
   showContainer(historyContainer);
   clearHistoryTable();
@@ -345,8 +347,7 @@ async function handleHistory() {
     })
     .then( res => res.json())
     .then( (data) => {
-      //console.log(data);
-      //if (data.length>0) {
+      dataCopy = data;
       data.map( (item) => {
         const ft = ext[item.mainfiletype-1];
         const dt = item.datecreated.split('T')[0];
@@ -354,18 +355,10 @@ async function handleHistory() {
         item.datecreated = dt;
         addHistoryRow(item);
       });
-      //}
-      //else {
-      //  handleNoHistoryMessage();
-      //}
-    })
-    .catch( err => console.log(err));
+    
+    }).catch( err => console.log(err));
+    console.log("Tell the user to login before fetching history");
   }
-  //else {
-    // tell user to login before requesting history
-    //console.log("Tell the user to login before fetching history");
-    //handleNoHistoryMessage();
-  //}
 }
 
 function hideAll(){
@@ -374,6 +367,7 @@ function hideAll(){
   uploadContainer.classList.add("hidden");
   fileListContainer.classList.add("hidden");
   webDescContainer.classList.add("hidden");
+  noHistoryContainer.classList.add("history");
 }
 
 function showContainer(item){
