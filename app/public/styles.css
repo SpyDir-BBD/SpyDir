@@ -142,11 +142,11 @@ padding: 1rem;
 }
 
 .showFile{
-  background-color: var(--veryLightBlue);
+  background-color: var(--DropAreaColor);
   border-radius: 0.1rem;
   border-style: dashed;
   border-width: 0.1rem;
-  border-color: var(--darkerBlue);
+  border-color: var(--DropAreaBorder);
   margin:auto;
   margin-top:0.5rem;
   text-align: center;
@@ -156,6 +156,17 @@ padding: 1rem;
   padding-left: 0.6rem;
   justify-content: space-between;
   align-items: center;
+}
+
+.deleteButton{
+  color:red;
+  transition: 0.2s;
+}
+
+.deleteButton:hover{
+  cursor: pointer;
+  transform: scale(1.1);
+  transition: 0.2s;
 }
 
 /* Start - File Upload History Styling */

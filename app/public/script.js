@@ -38,6 +38,7 @@ const graphColors = [
 window.expandOrCollapseFiles = expandOrCollapseFiles;
 window.handleDrop = handleDrop;
 window.setColorScheme = setColorScheme;
+window.removeFile = removeFile;
 
 document.getElementById("burgerButton").addEventListener("click",openNav);
 
@@ -115,12 +116,12 @@ const dropArea = document.getElementById("drop-area");
     dropArea.addEventListener(eventName, unhighlight, false);
   });
   
-  function highlight(dropArea) {
+  function highlight(e) {
     dropArea.classList.add("highlight");
     console.log("hello???/");
   }
   
-  function unhighlight(dropArea) {
+  function unhighlight(e) {
     dropArea.classList.remove("highlight");
   }
 
@@ -475,6 +476,14 @@ function clearHistoryTable(){
   for (var i = tableHeaderRowCount; i < rowCount; i++) {
     table.deleteRow(tableHeaderRowCount);
   }
+}
+
+function removeFile(){
+  fileHolder.replaceChildren();
+  document.getElementById("fileTypeList").replaceChildren();
+  document.getElementById("fileBlockHolder").classList.add("hidden");
+  pieChartContainer.classList.add("hidden");
+  fileListContainer.classList.add("hidden");
 }
 
 
