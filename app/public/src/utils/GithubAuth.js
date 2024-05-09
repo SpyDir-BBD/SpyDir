@@ -46,6 +46,13 @@ export class AuthManager {
         }
     }
 
+    logout() {
+        this.loggedIn = false;
+        this.username = null;
+        this.imageURL = null;
+        this.access_token = null;
+    }
+
     async setUserInfo() {
         console.log("Setting user info");
         const url = 'https://api.github.com/user';

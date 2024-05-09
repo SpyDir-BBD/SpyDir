@@ -73,6 +73,7 @@ if (urlParams.has('code')) {
   const _ = new AuthManager(urlParams.get('code'));
 }
 document.getElementById("homeLink").addEventListener("click",handleHome);
+document.getElementById("logoutLink").addEventListener("click",handleLogout);
 document.getElementById("fileInput").addEventListener("change",uploadFile);
 
 function goHome(){
@@ -307,6 +308,10 @@ function handleHome(){
   showContainer(webDescContainer);
 }
 
+function handleLogout(){
+    window.location.href = '/';
+}
+
 function addHistoryRow(item) {
   const table = document.getElementById("historyTable");
 
@@ -325,7 +330,6 @@ async function handleHistory() {
   var dataCopy;
   hideAll();
   showContainer(historyContainer);
-  clearHistoryTable();
   if (AuthManager.instance) {
     const request = await fetch('/api/history', {
       method: 'GET', 
@@ -336,12 +340,17 @@ async function handleHistory() {
     })
     .then( res => res.json())
     .then( (data) => {
+      clearHistoryTable();
 
       const tableLoader = document.querySelector('.tableLoader');
       const uploadHistoryTable = document.querySelector('.uploadHistoryTable');
 
-      tableLoader.classList.toggle('hidden');
-      uploadHistoryTable.classList.toggle('hidden');
+      const myTimeout = setTimeout(() => {
+        tableLoader.classList.add('hidden');
+        uploadHistoryTable.classList.remove('hidden');
+      }, 1500);
+
+
 
       dataCopy = data;
       data.map( (item) => {
