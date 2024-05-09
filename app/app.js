@@ -131,6 +131,35 @@ app.get('/api/history', async (req, res) => {
   }
 });
 
+app.post('/api/theme', async (req, res) => {
+  const requestAccessToken = req.headers.authorization.substring(7, req.headers.authorization.length);
+
+  if (requestAccessToken !== globalAccessToken) {
+    res.status(403).send(JSON.stringify({ 'error': 'Access token is not valid.' })); // status code 403 = forbidden -> server refuses to authorize user
+  }
+  else {
+    //console.log(req);
+    req.body = JSON.parse(req.body);
+
+    var user_id = req.body["user_id"];
+    var theme_id = req.body["theme_id"];
+
+    console.log("================================");
+    console.log(user_id);
+    console.log(theme_id);
+
+    await db_cliient.setUserTheme(user_id, theme_id)
+    .then( (db_result) => {
+      //console.log(db_result);
+      res.status(200).header('Content-Type', 'application/json').send(JSON.stringify({ 'message': 'theme set successfully.' }));
+    })
+    .catch( (err) => {
+      console.log(err);
+      res.status(404).header('Content-Type', 'application/json').send(JSON.stringify({"message" : err}));
+    });
+  }
+});
+
 // access token is required to upload zip file details
 app.post('/api/uploadfile', async (req, res) => {
 

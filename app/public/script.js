@@ -349,15 +349,11 @@ async function handleHistory() {
         item.datecreated = dt;
         addHistoryRow(item);
       });
-    }
-  )
-    .catch( err => console.log(err));
-  }
-  else {
-    // tell user to login before requesting history
+    
+    }).catch( err => console.log(err));
     console.log("Tell the user to login before fetching history");
   }
-
+  
   if(dataCopy.length == 0){
     hideAll();
     showContainer(noHistoryContainer);
@@ -471,17 +467,34 @@ function createFolder(folderName,items,parent) {
   parent.appendChild(folderHolder);
 }
 
-function setColorScheme(){
+async function setColorScheme(){
   const radioButtons = document.querySelectorAll('input[name="theme"]');
   let selectedIndex;
       for (const radioButton of radioButtons) {
-          if (radioButton.checked) {
-              selectedIndex = radioButton.id;
-              break;
-            }
-          }
-          setTheme(selectedIndex);
-          //set user preferredtheme in database
+        if (radioButton.checked) {
+            selectedIndex = radioButton.id;
+            break;
+        }
+      }
+      setTheme(selectedIndex);
+      
+      const request = await fetch('/api/theme', {
+        method: 'POST',
+        headers: {
+          "Authorization": `Bearer ${AuthManager.instance.access_token}`, // access token is required to upload a file
+        },
+        body: JSON.stringify({
+          "user_id": `${AuthManager.instance.user_id}`,
+          "theme_id" : JSON.stringify(parseInt(selectedIndex)+1)
+        })
+      })
+      .then( res => res.json())
+      .then( (data) => {
+        // data contains a json list of files that were uploaded, operations on the list can be done here
+        console.log(data);
+      })
+      .catch( err => console.log(err));
+      
 }
 
 function clearHistoryTable(){
