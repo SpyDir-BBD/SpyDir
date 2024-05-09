@@ -95,7 +95,7 @@ export class AuthManager {
             .then( (data) => {
                 this.user_id = data["user_details"]["id"];
                 this.theme_id = data["user_details"]["themepreference"];
-                setTheme(this.theme_id);
+                setTheme(this.theme_id - 1);
                 document.getElementById("loginButton").classList.add("hidden");
                 document.getElementById("loginDesc").classList.add("hidden");
                 document.getElementById("burgerButton").classList.remove("hidden");
