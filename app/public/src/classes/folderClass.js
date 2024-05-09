@@ -25,10 +25,7 @@ export class FileObject {
 
         const countExtensions = (node) => { // local recursive function within countDistinctExtensions function
             if (node.type === OBJECT_TYPE.FILE) {
-                //console.log("file_name: " + node.name);
                 const extension = node.name.substring(node.name.lastIndexOf('.'));
-                //console.log("Extension: " + extension);
-                //console.log("=======================================");
                 if (extensionCount[extension]) {
                     extensionCount[extension]++;
                 } 
@@ -43,9 +40,6 @@ export class FileObject {
             }
         };
         countExtensions(this, this.children);
-        //console.log("extensions: " + JSON.stringify(extensionCount));
-        //console.log("zipFileStructure: " + JSON.stringify(zipFileStructure));
-        //return { extensionCounts: extensionCount, zipFileStructure: zipFileStructure };
         return extensionCount;
     }
 }

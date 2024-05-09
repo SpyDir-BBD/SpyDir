@@ -28,16 +28,13 @@ app.get('/github-login', async (req, res) => {
     "message" : "github login url",
     "url" : `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=user,repo,pull_requests:write,pull_requests:read`
   });
-  //console.log(data);
   res.status(200).send(data);
 });
 
 app.post('/api/token', async (req, res) => {
   try {
-    console.log('hit');
 
     //req.body = JSON.parse(req.body);
-    //console.log(req.body);
     var code = req.body["authCode"];
     
     // Make a request to GitHub API
@@ -49,11 +46,8 @@ app.post('/api/token', async (req, res) => {
     });
     const githubData = await githubResponse.text();
     const access_token = githubData.split('access_token=')[1].split('&scope')[0];
-    //console.log("===========================");
-    //console.log("access_token = " + access_token);
     globalAccessToken = access_token;
-    //console.log("access_token = " + globalAccessToken);
-    //console.log("===========================");
+
 
     // send access token to client
     res.status(200).send(access_token);

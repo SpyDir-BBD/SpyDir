@@ -56,7 +56,6 @@ async function authGithubLogin() {
   })
   .then( res => res.json())
   .then( (data) => {
-    //console.log(data);
     url = data["url"];
   })
   .catch( err => console.log(err));
@@ -73,6 +72,7 @@ if (urlParams.has('code')) {
   const _ = new AuthManager(urlParams.get('code'));
 }
 document.getElementById("homeLink").addEventListener("click",handleHome);
+document.getElementById("logoutLink").addEventListener("click",handleLogout);
 document.getElementById("fileInput").addEventListener("change",uploadFile);
 
 function goHome(){
@@ -180,12 +180,10 @@ function uploadFile() {
   function processFile(file){
     
     if (!file) {
-      console.log("No file selected");
       return;
     }
 
     if (!file.name.split('.')[1] == '.zip') {
-      console.log("Not a Zip file");
       return;
     }
 
@@ -233,21 +231,14 @@ function uploadFile() {
       //for (const i in sortedExtensions) {
       //  if (ext.includes(sortedExtensions[i])) {
       //    mainExtension = sortedExtensions[i];
-      //    console.log("Main File Extension Type:", mainExtension);
       //    break;
       //  }
       //}
 
       // if there are no applicable extensions
-      //console.log("Main File Extension Type:", mainExtension);
       //if (!mainExtension) {
       //  mainExtension = "undefined";
       //}
-
-      // console.log("Filename:", filename);
-      // console.log("Total Files:", totalFiles);
-      // console.log("Main File Extension Type:", mainExtension);
-      // console.log("Extension Percentages:", extensionPercentages);
       document.getElementById("fileBlockHolder").classList.remove("hidden");
 
       fileNameHolder.replaceChildren();
@@ -268,8 +259,6 @@ function uploadFile() {
       })
       .then( res => res.json())
       .then( (data) => {
-        // data contains a json list of files that were uploaded, operations on the list can be done here
-        console.log(data);
       })
       .catch( err => console.log(err));
       //}
@@ -298,13 +287,18 @@ function closeNav() {
 function launchAuth() {
   const clientID = 'Ov23liaDwohBlKUDcyxf';
   const url = `https://github.com/login/oauth/authorize?client_id=${clientID}&scope=user,repo,pull_requests:write,pull_requests:read`;
-  window.open(url);
+  window.open(url, '_self');
+
 }
 
 function handleHome(){
   hideAll();
   showContainer(uploadContainer);
   showContainer(webDescContainer);
+}
+
+function handleLogout(){
+    window.location.href = '/';
 }
 
 function addHistoryRow(item) {
@@ -325,7 +319,6 @@ async function handleHistory() {
   var dataCopy;
   hideAll();
   showContainer(historyContainer);
-  clearHistoryTable();
   if (AuthManager.instance) {
     const request = await fetch('/api/history', {
       method: 'GET', 
@@ -336,12 +329,17 @@ async function handleHistory() {
     })
     .then( res => res.json())
     .then( (data) => {
+      clearHistoryTable();
 
       const tableLoader = document.querySelector('.tableLoader');
       const uploadHistoryTable = document.querySelector('.uploadHistoryTable');
 
-      tableLoader.classList.toggle('hidden');
-      uploadHistoryTable.classList.toggle('hidden');
+      const myTimeout = setTimeout(() => {
+        tableLoader.classList.add('hidden');
+        uploadHistoryTable.classList.remove('hidden');
+      }, 1500);
+
+
 
       dataCopy = data;
       data.map( (item) => {
@@ -420,12 +418,9 @@ document.addEventListener('keydown', function(event) {
 });
 
 function createFolder(folderName,items,parent) {
-  //console.log("folder name: " + folderName);
-  //console.log("items: " + items);
-  //console.log("parent: " + parent);
+
   const folderHolder = document.createElement("section");
   folderHolder.classList.add("folderHolder");
-  //console.log("Here!");
 
   const innerFolderHolder = document.createElement("section");
   innerFolderHolder.classList.add("innerFolderHolder");
@@ -452,7 +447,6 @@ function createFolder(folderName,items,parent) {
 
   for (let i = 0; i < items.length; i++) {
     const element = items[i];
-    //console.log(element);
     if(element.type == "FILE"){
       let innerFile = document.createElement("li");
       innerFile.classList.add("innerFile");
