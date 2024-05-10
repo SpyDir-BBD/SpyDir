@@ -52,7 +52,7 @@ Files with extensions not included in the above list will be categorized as ".ot
 ![image](https://github.com/SpyDir-BBD/SpyDir/assets/125252284/37cdeb27-58a1-4c86-a0ab-c444530b67a7)
 
 ### Credits
-Made with <3 by
+Made with JS by
 - Jenna
 - Wandile
 - Erno
