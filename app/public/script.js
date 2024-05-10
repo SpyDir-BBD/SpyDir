@@ -101,6 +101,7 @@ const dropArea = document.getElementById("drop-area");
   const fileNameHolder = document.getElementById("fileNameText");
   const fileHolder = document.getElementById("displayFile");
   const noHistoryContainer = document.getElementById("noHistoryContainer");
+  const fileNameContainer = document.getElementById("fileBlockHolder");
 
   hideAll();
   populateFileTypesList();
@@ -370,6 +371,7 @@ function hideAll(){
   fileListContainer.classList.add("hidden");
   webDescContainer.classList.add("hidden");
   noHistoryContainer.classList.add("hidden");
+  fileNameContainer.classList.add("hidden");
 }
 
 function showContainer(item){
